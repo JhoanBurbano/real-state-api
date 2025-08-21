@@ -10,17 +10,17 @@ namespace Million.Infrastructure.Repositories;
 
 public class PropertyRepository : IPropertyRepository
 {
-    private readonly IMongoCollection<Property> _collection;
+    private readonly IMongoCollection<PropertyDocument> _collection;
 
     public PropertyRepository(MongoContext context)
     {
-        _collection = context.GetCollection<Property>("properties");
+        _collection = context.GetCollection<PropertyDocument>("properties");
     }
 
     public async Task<(IReadOnlyList<Property> Items, long Total)> FindAsync(PropertyListQuery query, CancellationToken cancellationToken)
     {
-        var filters = new List<FilterDefinition<Property>>();
-        var builder = Builders<Property>.Filter;
+        var filters = new List<FilterDefinition<PropertyDocument>>();
+        var builder = Builders<PropertyDocument>.Filter;
 
         bool hasName = !string.IsNullOrWhiteSpace(query.Name);
         bool hasAddress = !string.IsNullOrWhiteSpace(query.Address);
@@ -44,7 +44,7 @@ public class PropertyRepository : IPropertyRepository
 
         var filter = filters.Count > 0 ? builder.And(filters) : builder.Empty;
 
-        var find = _collection.Find(filter).Project<Property>(Builders<Property>.Projection.Exclude("_v"));
+        var find = _collection.Find(filter).Project<PropertyDocument>(Builders<PropertyDocument>.Projection.Exclude("_v"));
 
         var sort = ParseSort(query.Sort);
         find = find.Sort(sort);
@@ -53,18 +53,19 @@ public class PropertyRepository : IPropertyRepository
         var totalTask = _collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
         var itemsTask = find.Skip(skip).Limit(query.PageSize).ToListAsync(cancellationToken);
         await Task.WhenAll(totalTask, itemsTask);
-        return (itemsTask.Result, totalTask.Result);
+        return (itemsTask.Result.Select(doc => doc.ToEntity()).ToList(), totalTask.Result);
     }
 
-    public Task<Property?> GetByIdAsync(string id, CancellationToken cancellationToken)
+    public async Task<Property?> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
-        var filter = Builders<Property>.Filter.Eq(x => x.Id, id);
-        return _collection.Find(filter).FirstOrDefaultAsync(cancellationToken)!;
+        var filter = Builders<PropertyDocument>.Filter.Eq(x => x.Id, id);
+        var document = await _collection.Find(filter).FirstOrDefaultAsync(cancellationToken);
+        return document?.ToEntity();
     }
 
-    private static SortDefinition<Property> ParseSort(string? sort)
+    private static SortDefinition<PropertyDocument> ParseSort(string? sort)
     {
-        var builder = Builders<Property>.Sort;
+        var builder = Builders<PropertyDocument>.Sort;
         return (sort?.ToLowerInvariant()) switch
         {
             "price" => builder.Ascending(x => x.PriceProperty),
