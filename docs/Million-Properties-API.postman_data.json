@@ -1,0 +1,62 @@
+{
+	"properties": [
+		{
+			"id": "prop_001",
+			"idOwner": "owner_001",
+			"name": "Villa Marina Luxury",
+			"addressProperty": "123 Ocean Drive, Miami Beach, FL 33139",
+			"priceProperty": 2500000.00,
+			"image": "https://example.com/images/villa-marina.jpg"
+		},
+		{
+			"id": "prop_002",
+			"idOwner": "owner_002",
+			"name": "Penthouse Skyline",
+			"addressProperty": "456 Brickell Ave, Miami, FL 33131",
+			"priceProperty": 1800000.00,
+			"image": "https://example.com/images/penthouse-skyline.jpg"
+		},
+		{
+			"id": "prop_003",
+			"idOwner": "owner_003",
+			"name": "Beachfront Condo",
+			"addressProperty": "789 Collins Ave, Miami Beach, FL 33139",
+			"priceProperty": 1200000.00,
+			"image": "https://example.com/images/beachfront-condo.jpg"
+		},
+		{
+			"id": "prop_004",
+			"idOwner": "owner_004",
+			"name": "Modern Downtown Loft",
+			"addressProperty": "321 Biscayne Blvd, Miami, FL 33132",
+			"priceProperty": 950000.00,
+			"image": "https://example.com/images/modern-loft.jpg"
+		},
+		{
+			"id": "prop_005",
+			"idOwner": "owner_005",
+			"name": "Waterfront Estate",
+			"addressProperty": "654 Venetian Way, Miami, FL 33139",
+			"priceProperty": 3500000.00,
+			"image": "https://example.com/images/waterfront-estate.jpg"
+		}
+	],
+	"test_queries": [
+		{
+			"name": "Properties under 1M",
+			"url": "{{base_url}}/properties?maxPrice=1000000&page=1&pageSize=10"
+		},
+		{
+			"name": "Properties in Miami Beach",
+			"url": "{{base_url}}/properties?address=miami beach&page=1&pageSize=20"
+		},
+		{
+			"name": "Villas and Estates",
+			"url": "{{base_url}}/properties?name=villa&name=estate&page=1&pageSize=15"
+		},
+		{
+			"name": "Luxury Properties 2M+",
+			"url": "{{base_url}}/properties?minPrice=2000000&sort=price&page=1&pageSize=10"
+		}
+	]
+}

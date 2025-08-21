@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "tNPyb5gZl8m84SwbYZx1hAPo8U5fTyDcBda1fU1MngI=",
+  "Hash": "/k32x7xe2TEAA3TAMn2mKN0qhAGl+hLvUEjjSqJE3FQ=",
   "Source": "Million.Web",
   "BasePath": "_content/Million.Web",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

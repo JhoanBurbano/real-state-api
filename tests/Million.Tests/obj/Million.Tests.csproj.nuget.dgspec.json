@@ -1,33 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "/workspace/tests/Million.Tests/Million.Tests.csproj": {}
+    "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/tests/Million.Tests/Million.Tests.csproj": {}
   },
   "projects": {
-    "/workspace/src/Million.Application/Million.Application.csproj": {
+    "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspace/src/Million.Application/Million.Application.csproj",
+        "projectUniqueName": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj",
         "projectName": "Million.Application",
-        "projectPath": "/workspace/src/Million.Application/Million.Application.csproj",
-        "packagesPath": "/home/ubuntu/.nuget/packages/",
-        "outputPath": "/workspace/src/Million.Application/obj/",
+        "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj",
+        "packagesPath": "/Users/jsburbano/.nuget/packages/",
+        "outputPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ubuntu/.nuget/NuGet/NuGet.Config"
+          "/Users/jsburbano/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
-              "/workspace/src/Million.Domain/Million.Domain.csproj": {
-                "projectPath": "/workspace/src/Million.Domain/Million.Domain.csproj"
+              "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj": {
+                "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj"
               }
             }
           }
@@ -41,11 +41,12 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "FluentValidation": {
               "target": "Package",
@@ -68,31 +69,31 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/workspace/.dotnet/sdk/8.0.413/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/workspace/src/Million.Domain/Million.Domain.csproj": {
+    "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspace/src/Million.Domain/Million.Domain.csproj",
+        "projectUniqueName": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj",
         "projectName": "Million.Domain",
-        "projectPath": "/workspace/src/Million.Domain/Million.Domain.csproj",
-        "packagesPath": "/home/ubuntu/.nuget/packages/",
-        "outputPath": "/workspace/src/Million.Domain/obj/",
+        "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj",
+        "packagesPath": "/Users/jsburbano/.nuget/packages/",
+        "outputPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ubuntu/.nuget/NuGet/NuGet.Config"
+          "/Users/jsburbano/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -105,11 +106,12 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "imports": [
             "net461",
             "net462",
@@ -126,37 +128,37 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/workspace/.dotnet/sdk/8.0.413/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/workspace/src/Million.Infrastructure/Million.Infrastructure.csproj": {
+    "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Infrastructure/Million.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspace/src/Million.Infrastructure/Million.Infrastructure.csproj",
+        "projectUniqueName": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Infrastructure/Million.Infrastructure.csproj",
         "projectName": "Million.Infrastructure",
-        "projectPath": "/workspace/src/Million.Infrastructure/Million.Infrastructure.csproj",
-        "packagesPath": "/home/ubuntu/.nuget/packages/",
-        "outputPath": "/workspace/src/Million.Infrastructure/obj/",
+        "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Infrastructure/Million.Infrastructure.csproj",
+        "packagesPath": "/Users/jsburbano/.nuget/packages/",
+        "outputPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ubuntu/.nuget/NuGet/NuGet.Config"
+          "/Users/jsburbano/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
-              "/workspace/src/Million.Application/Million.Application.csproj": {
-                "projectPath": "/workspace/src/Million.Application/Million.Application.csproj"
+              "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj": {
+                "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj"
               },
-              "/workspace/src/Million.Domain/Million.Domain.csproj": {
-                "projectPath": "/workspace/src/Million.Domain/Million.Domain.csproj"
+              "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj": {
+                "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj"
               }
             }
           }
@@ -170,11 +172,12 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "Microsoft.Extensions.Options": {
               "target": "Package",
@@ -201,37 +204,37 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/workspace/.dotnet/sdk/8.0.413/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/workspace/src/Million.Web/Million.Web.csproj": {
+    "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Web/Million.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspace/src/Million.Web/Million.Web.csproj",
+        "projectUniqueName": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Web/Million.Web.csproj",
         "projectName": "Million.Web",
-        "projectPath": "/workspace/src/Million.Web/Million.Web.csproj",
-        "packagesPath": "/home/ubuntu/.nuget/packages/",
-        "outputPath": "/workspace/src/Million.Web/obj/",
+        "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Web/Million.Web.csproj",
+        "packagesPath": "/Users/jsburbano/.nuget/packages/",
+        "outputPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Web/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ubuntu/.nuget/NuGet/NuGet.Config"
+          "/Users/jsburbano/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
-              "/workspace/src/Million.Application/Million.Application.csproj": {
-                "projectPath": "/workspace/src/Million.Application/Million.Application.csproj"
+              "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj": {
+                "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj"
               },
-              "/workspace/src/Million.Infrastructure/Million.Infrastructure.csproj": {
-                "projectPath": "/workspace/src/Million.Infrastructure/Million.Infrastructure.csproj"
+              "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Infrastructure/Million.Infrastructure.csproj": {
+                "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Infrastructure/Million.Infrastructure.csproj"
               }
             }
           }
@@ -245,11 +248,12 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "FluentValidation.AspNetCore": {
               "target": "Package",
@@ -295,40 +299,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/workspace/.dotnet/sdk/8.0.413/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/workspace/tests/Million.Tests/Million.Tests.csproj": {
+    "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/tests/Million.Tests/Million.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspace/tests/Million.Tests/Million.Tests.csproj",
+        "projectUniqueName": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/tests/Million.Tests/Million.Tests.csproj",
         "projectName": "Million.Tests",
-        "projectPath": "/workspace/tests/Million.Tests/Million.Tests.csproj",
-        "packagesPath": "/home/ubuntu/.nuget/packages/",
-        "outputPath": "/workspace/tests/Million.Tests/obj/",
+        "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/tests/Million.Tests/Million.Tests.csproj",
+        "packagesPath": "/Users/jsburbano/.nuget/packages/",
+        "outputPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/tests/Million.Tests/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ubuntu/.nuget/NuGet/NuGet.Config"
+          "/Users/jsburbano/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
-              "/workspace/src/Million.Application/Million.Application.csproj": {
-                "projectPath": "/workspace/src/Million.Application/Million.Application.csproj"
+              "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj": {
+                "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Application/Million.Application.csproj"
               },
-              "/workspace/src/Million.Domain/Million.Domain.csproj": {
-                "projectPath": "/workspace/src/Million.Domain/Million.Domain.csproj"
+              "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj": {
+                "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj"
               },
-              "/workspace/src/Million.Web/Million.Web.csproj": {
-                "projectPath": "/workspace/src/Million.Web/Million.Web.csproj"
+              "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Web/Million.Web.csproj": {
+                "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Web/Million.Web.csproj"
               }
             }
           }
@@ -342,11 +346,12 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "FluentAssertions": {
               "target": "Package",
@@ -393,7 +398,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/workspace/.dotnet/sdk/8.0.413/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

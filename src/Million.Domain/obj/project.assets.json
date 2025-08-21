@@ -1,36 +1,36 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net9.0": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net9.0": []
   },
   "packageFolders": {
-    "/home/ubuntu/.nuget/packages/": {}
+    "/Users/jsburbano/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/workspace/src/Million.Domain/Million.Domain.csproj",
+      "projectUniqueName": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj",
       "projectName": "Million.Domain",
-      "projectPath": "/workspace/src/Million.Domain/Million.Domain.csproj",
-      "packagesPath": "/home/ubuntu/.nuget/packages/",
-      "outputPath": "/workspace/src/Million.Domain/obj/",
+      "projectPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/Million.Domain.csproj",
+      "packagesPath": "/Users/jsburbano/.nuget/packages/",
+      "outputPath": "/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/ubuntu/.nuget/NuGet/NuGet.Config"
+        "/Users/jsburbano/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
-        "net8.0"
+        "net9.0"
       ],
       "sources": {
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "projectReferences": {}
         }
       },
@@ -43,11 +43,12 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
-      "net8.0": {
-        "targetAlias": "net8.0",
+      "net9.0": {
+        "targetAlias": "net9.0",
         "imports": [
           "net461",
           "net462",
@@ -64,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/workspace/.dotnet/sdk/8.0.413/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

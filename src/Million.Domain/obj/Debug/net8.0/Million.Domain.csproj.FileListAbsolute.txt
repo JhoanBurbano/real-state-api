@@ -10,3 +10,15 @@
 /workspace/src/Million.Domain/obj/Debug/net8.0/refint/Million.Domain.dll
 /workspace/src/Million.Domain/obj/Debug/net8.0/Million.Domain.pdb
 /workspace/src/Million.Domain/obj/Debug/net8.0/ref/Million.Domain.dll
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/bin/Debug/net8.0/Million.Domain.deps.json
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/bin/Debug/net8.0/Million.Domain.dll
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/bin/Debug/net8.0/Million.Domain.pdb
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/Million.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/Million.Domain.AssemblyInfoInputs.cache
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/Million.Domain.AssemblyInfo.cs
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/Million.Domain.csproj.CoreCompileInputs.cache
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/Million.Domain.sourcelink.json
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/Million.Domain.dll
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/refint/Million.Domain.dll
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/Million.Domain.pdb
+/Users/jsburbano/Documents/freelance/challenges/million/real-state-api/src/Million.Domain/obj/Debug/net8.0/ref/Million.Domain.dll

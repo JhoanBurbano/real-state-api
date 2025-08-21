@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "million-properties-api",
+		"name": "Million Properties API",
+		"description": "Colección para probar la API de propiedades inmobiliarias de lujo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Checks",
+			"item": [
+				{
+					"name": "Health Live",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health/live",
+							"host": ["{{base_url}}"],
+							"path": ["health", "live"]
+						},
+						"description": "Verificar que la aplicación esté viva"
+					},
+					"response": []
+				},
+				{
+					"name": "Health Ready",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health/ready",
+							"host": ["{{base_url}}"],
+							"path": ["health", "ready"]
+						},
+						"description": "Verificar que la aplicación esté lista para recibir requests"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de salud de la aplicación"
+		},
+		{
+			"name": "Properties",
+			"item": [
+				{
+					"name": "Get All Properties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/properties",
+							"host": ["{{base_url}}"],
+							"path": ["properties"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Número de página"
+								},
+								{
+									"key": "pageSize",
+									"value": "12",
+									"description": "Tamaño de página"
+								}
+							]
+						},
+						"description": "Obtener todas las propiedades con paginación"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Properties with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/properties?name=villa&minPrice=500000&maxPrice=2000000&sort=price",
+							"host": ["{{base_url}}"],
+							"path": ["properties"],
+							"query": [
+								{
+									"key": "name",
+									"value": "villa",
+									"description": "Filtrar por nombre"
+								},
+								{
+									"key": "minPrice",
+									"value": "500000",
+									"description": "Precio mínimo"
+								},
+								{
+									"key": "maxPrice",
+									"value": "2000000",
+									"description": "Precio máximo"
+								},
+								{
+									"key": "sort",
+									"value": "price",
+									"description": "Ordenar por precio"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Obtener propiedades con filtros avanzados"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Properties by Address",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/properties?address=miami&page=1&pageSize=20",
+							"host": ["{{base_url}}"],
+							"path": ["properties"],
+							"query": [
+								{
+									"key": "address",
+									"value": "miami",
+									"description": "Filtrar por dirección"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Buscar propiedades por ubicación"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Property by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/properties/{{property_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["properties", "{{property_id}}"]
+						},
+						"description": "Obtener una propiedad específica por ID"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestionar propiedades inmobiliarias"
+		},
+		{
+			"name": "Swagger Documentation",
+			"item": [
+				{
+					"name": "Swagger UI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/swagger",
+							"host": ["{{base_url}}"],
+							"path": ["swagger"]
+						},
+						"description": "Acceder a la documentación Swagger de la API"
+					},
+					"response": []
+				}
+			],
+			"description": "Documentación de la API"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Log request details",
+					"console.log('Request:', pm.request.method, pm.request.url);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Test response status",
+					"pm.test('Status code is 200', function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"// Test response time",
+					"pm.test('Response time is less than 2000ms', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+					"});",
+					"",
+					"// Test response headers",
+					"pm.test('Response has content-type header', function () {",
+					"    pm.response.to.have.header('Content-Type');",
+					"});",
+					"",
+					"// Log response details",
+					"console.log('Response:', pm.response.status, pm.response.responseTime + 'ms');"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "property_id",
+			"value": "sample_property_id",
+			"type": "string"
+		}
+	]
+}
