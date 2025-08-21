@@ -1,0 +1,47 @@
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# Test results & coverage
+TestResults/
+**/TestResults/
+coverage/
+coverage*/
+
+# IDE/editor settings
+.vs/
+.vscode/
+.idea/
+.Rider*/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Packages
+*.nupkg
+*.snupkg
+packages/
+
+# Logs & temp
+*.log
+*.tlog
+*.tmp
+*.swp
+
+# Node (if present for tooling)
+node_modules/
+
+# Local appsettings overrides
+**/appsettings.*.local.json
+**/appsettings.local.json
+
+# Docker build cache
+**/.docker-cache/
+
