@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "YRfGnGICDh0=",
+  "success": true,
+  "projectFilePath": "/workspace/src/Million.Application/Million.Application.csproj",
+  "expectedPackageFiles": [
+    "/home/ubuntu/.nuget/packages/fluentvalidation/12.0.0/fluentvalidation.12.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,16 @@
+/workspace/src/Million.Application/bin/Debug/net8.0/Million.Application.deps.json
+/workspace/src/Million.Application/bin/Debug/net8.0/Million.Application.dll
+/workspace/src/Million.Application/bin/Debug/net8.0/Million.Application.pdb
+/workspace/src/Million.Application/bin/Debug/net8.0/Million.Domain.dll
+/workspace/src/Million.Application/bin/Debug/net8.0/Million.Domain.pdb
+/workspace/src/Million.Application/obj/Debug/net8.0/Million.Application.csproj.AssemblyReference.cache
+/workspace/src/Million.Application/obj/Debug/net8.0/Million.Application.GeneratedMSBuildEditorConfig.editorconfig
+/workspace/src/Million.Application/obj/Debug/net8.0/Million.Application.AssemblyInfoInputs.cache
+/workspace/src/Million.Application/obj/Debug/net8.0/Million.Application.AssemblyInfo.cs
+/workspace/src/Million.Application/obj/Debug/net8.0/Million.Application.csproj.CoreCompileInputs.cache
+/workspace/src/Million.Application/obj/Debug/net8.0/Million.Application.sourcelink.json
+/workspace/src/Million.Application/obj/Debug/net8.0/Million..D7ABA82E.Up2Date
+/workspace/src/Million.Application/obj/Debug/net8.0/Million.Application.dll
+/workspace/src/Million.Application/obj/Debug/net8.0/refint/Million.Application.dll
+/workspace/src/Million.Application/obj/Debug/net8.0/Million.Application.pdb
+/workspace/src/Million.Application/obj/Debug/net8.0/ref/Million.Application.dll

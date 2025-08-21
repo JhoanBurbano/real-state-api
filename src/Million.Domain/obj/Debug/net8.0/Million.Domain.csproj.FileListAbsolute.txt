@@ -1,0 +1,12 @@
+/workspace/src/Million.Domain/obj/Debug/net8.0/Million.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/workspace/src/Million.Domain/obj/Debug/net8.0/Million.Domain.AssemblyInfoInputs.cache
+/workspace/src/Million.Domain/obj/Debug/net8.0/Million.Domain.AssemblyInfo.cs
+/workspace/src/Million.Domain/obj/Debug/net8.0/Million.Domain.csproj.CoreCompileInputs.cache
+/workspace/src/Million.Domain/obj/Debug/net8.0/Million.Domain.sourcelink.json
+/workspace/src/Million.Domain/bin/Debug/net8.0/Million.Domain.deps.json
+/workspace/src/Million.Domain/bin/Debug/net8.0/Million.Domain.dll
+/workspace/src/Million.Domain/bin/Debug/net8.0/Million.Domain.pdb
+/workspace/src/Million.Domain/obj/Debug/net8.0/Million.Domain.dll
+/workspace/src/Million.Domain/obj/Debug/net8.0/refint/Million.Domain.dll
+/workspace/src/Million.Domain/obj/Debug/net8.0/Million.Domain.pdb
+/workspace/src/Million.Domain/obj/Debug/net8.0/ref/Million.Domain.dll
