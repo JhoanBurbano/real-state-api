@@ -1,28 +1,226 @@
 [
-  { "IdOwner": "owner1", "Name": "Oceanfront Villa", "AddressProperty": "100 Ocean Dr, Miami Beach, FL", "PriceProperty": 12500000, "Image": "https://images.example.com/miami/oceanfront-villa.jpg" },
-  { "IdOwner": "owner2", "Name": "Coral Gables Estate", "AddressProperty": "200 Coral Way, Coral Gables, FL", "PriceProperty": 6800000, "Image": "https://images.example.com/miami/coral-gables-estate.jpg" },
-  { "IdOwner": "owner3", "Name": "Brickell Sky Penthouse", "AddressProperty": "300 Brickell Ave, Miami, FL", "PriceProperty": 9800000, "Image": "https://images.example.com/miami/brickell-penthouse.jpg" },
-  { "IdOwner": "owner4", "Name": "Sunny Isles Tower Residence", "AddressProperty": "400 Collins Ave, Sunny Isles, FL", "PriceProperty": 4200000, "Image": "https://images.example.com/miami/sunny-isles.jpg" },
-  { "IdOwner": "owner5", "Name": "Key Biscayne Waterfront", "AddressProperty": "500 Harbor Dr, Key Biscayne, FL", "PriceProperty": 7900000, "Image": "https://images.example.com/miami/key-biscayne.jpg" },
-  { "IdOwner": "owner6", "Name": "South Beach Art Deco Home", "AddressProperty": "600 Collins Ave, Miami Beach, FL", "PriceProperty": 3100000, "Image": "https://images.example.com/miami/sobe-artdeco.jpg" },
-  { "IdOwner": "owner7", "Name": "Bal Harbour Bayview", "AddressProperty": "700 Bal Bay Dr, Bal Harbour, FL", "PriceProperty": 5500000, "Image": "https://images.example.com/miami/bal-harbour.jpg" },
-  { "IdOwner": "owner8", "Name": "Fisher Island Residence", "AddressProperty": "800 Fisher Island Dr, Miami, FL", "PriceProperty": 15000000, "Image": "https://images.example.com/miami/fisher-island.jpg" },
-  { "IdOwner": "owner9", "Name": "Coconut Grove Modern", "AddressProperty": "900 Bird Ave, Coconut Grove, FL", "PriceProperty": 4600000, "Image": "https://images.example.com/miami/coconut-grove.jpg" },
-  { "IdOwner": "owner10", "Name": "Design District Loft", "AddressProperty": "1000 NE 2nd Ave, Miami, FL", "PriceProperty": 2200000, "Image": "https://images.example.com/miami/design-district.jpg" },
-  { "IdOwner": "owner11", "Name": "Wynwood Creative House", "AddressProperty": "1100 NW 2nd Ave, Miami, FL", "PriceProperty": 1800000, "Image": "https://images.example.com/miami/wynwood.jpg" },
-  { "IdOwner": "owner12", "Name": "Aventura Marina Condo", "AddressProperty": "1200 Yacht Club Way, Aventura, FL", "PriceProperty": 1300000, "Image": "https://images.example.com/miami/aventura.jpg" },
-  { "IdOwner": "owner13", "Name": "Hollywood Beach Retreat", "AddressProperty": "1300 Ocean Dr, Hollywood, FL", "PriceProperty": 2400000, "Image": "https://images.example.com/miami/hollywood.jpg" },
-  { "IdOwner": "owner14", "Name": "Fort Lauderdale Intracoastal", "AddressProperty": "1400 Las Olas Blvd, Fort Lauderdale, FL", "PriceProperty": 3700000, "Image": "https://images.example.com/miami/las-olas.jpg" },
-  { "IdOwner": "owner15", "Name": "Boca Raton Country Club", "AddressProperty": "1500 Palmetto Park Rd, Boca Raton, FL", "PriceProperty": 2800000, "Image": "https://images.example.com/miami/boca-raton.jpg" },
-  { "IdOwner": "owner16", "Name": "Palm Beach Ocean Manor", "AddressProperty": "1600 S Ocean Blvd, Palm Beach, FL", "PriceProperty": 11200000, "Image": "https://images.example.com/miami/palm-beach.jpg" },
-  { "IdOwner": "owner17", "Name": "Delray Beach Cottage", "AddressProperty": "1700 Atlantic Ave, Delray Beach, FL", "PriceProperty": 1450000, "Image": "https://images.example.com/miami/delray.jpg" },
-  { "IdOwner": "owner18", "Name": "West Palm City Views", "AddressProperty": "1800 Clematis St, West Palm Beach, FL", "PriceProperty": 2100000, "Image": "https://images.example.com/miami/west-palm.jpg" },
-  { "IdOwner": "owner19", "Name": "Miami Shores Family Home", "AddressProperty": "1900 Biscayne Blvd, Miami Shores, FL", "PriceProperty": 1650000, "Image": "https://images.example.com/miami/miami-shores.jpg" },
-  { "IdOwner": "owner20", "Name": "North Miami Bay House", "AddressProperty": "2000 NE 135th St, North Miami, FL", "PriceProperty": 1950000, "Image": "https://images.example.com/miami/north-miami.jpg" },
-  { "IdOwner": "owner21", "Name": "Surfside Boutique Condo", "AddressProperty": "2100 Collins Ave, Surfside, FL", "PriceProperty": 1250000, "Image": "https://images.example.com/miami/surfside.jpg" },
-  { "IdOwner": "owner22", "Name": "Bay Harbor Islands Modern", "AddressProperty": "2200 Bay Harbor Dr, Bay Harbor Islands, FL", "PriceProperty": 2350000, "Image": "https://images.example.com/miami/bhi.jpg" },
-  { "IdOwner": "owner23", "Name": "Edgewater Highrise", "AddressProperty": "2300 Biscayne Blvd, Miami, FL", "PriceProperty": 2750000, "Image": "https://images.example.com/miami/edgewater.jpg" },
-  { "IdOwner": "owner24", "Name": "Doral Golf Villa", "AddressProperty": "2400 NW 87th Ave, Doral, FL", "PriceProperty": 2050000, "Image": "https://images.example.com/miami/doral.jpg" },
-  { "IdOwner": "owner25", "Name": "Little Havana Townhome", "AddressProperty": "2500 SW 8th St, Miami, FL", "PriceProperty": 950000, "Image": "https://images.example.com/miami/little-havana.jpg" }
+  {
+    "id": "prop-001",
+    "ownerId": "owner-001",
+    "name": "Oceanfront Villa",
+    "address": "100 Ocean Dr, Miami Beach, FL",
+    "price": 12500000,
+    "codeInternal": "MB001",
+    "year": 2020,
+    "status": "Active",
+    "cover": {
+      "type": "Image",
+      "url": "https://blob.vercel-storage.com/properties/mb001/cover.jpg",
+      "index": 0
+    },
+    "media": [
+      {
+        "id": "media-001",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/mb001/1.jpg",
+        "index": 1,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-002",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/mb001/2.jpg",
+        "index": 2,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-003",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/mb001/3.jpg",
+        "index": 3,
+        "enabled": true,
+        "featured": true
+      }
+    ],
+    "description": "Luxurious oceanfront villa with panoramic views of the Atlantic Ocean",
+    "city": "Miami Beach",
+    "neighborhood": "South Beach",
+    "propertyType": "Villa",
+    "size": 8500,
+    "bedrooms": 5,
+    "bathrooms": 6,
+    "hasPool": true,
+    "hasGarden": true,
+    "hasParking": true,
+    "isFurnished": true,
+    "availableFrom": "2024-01-15T00:00:00Z",
+    "availableTo": "2024-12-31T00:00:00Z",
+    "traces": [
+      {
+        "id": "trace-001",
+        "dateSale": "2020-06-15T00:00:00Z",
+        "name": "Previous Sale",
+        "value": 11000000,
+        "tax": 750000
+      }
+    ],
+    "coverImage": "https://blob.vercel-storage.com/properties/mb001/cover.jpg",
+    "images": [
+      {
+        "url": "https://blob.vercel-storage.com/properties/mb001/1.jpg",
+        "index": 1,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/mb001/2.jpg",
+        "index": 2,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/mb001/3.jpg",
+        "index": 3,
+        "enabled": true
+      }
+    ],
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z",
+    "isActive": true
+  },
+  {
+    "id": "prop-002",
+    "ownerId": "owner-002",
+    "name": "Coral Gables Estate",
+    "address": "200 Coral Way, Coral Gables, FL",
+    "price": 6800000,
+    "codeInternal": "CG001",
+    "year": 2018,
+    "status": "Active",
+    "cover": {
+      "type": "Image",
+      "url": "https://blob.vercel-storage.com/properties/cg001/cover.jpg",
+      "index": 0
+    },
+    "media": [
+      {
+        "id": "media-004",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/cg001/1.jpg",
+        "index": 1,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-005",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/cg001/2.jpg",
+        "index": 2,
+        "enabled": true,
+        "featured": true
+      }
+    ],
+    "description": "Elegant estate in the prestigious Coral Gables area",
+    "city": "Coral Gables",
+    "neighborhood": "Old Cutler",
+    "propertyType": "Estate",
+    "size": 6200,
+    "bedrooms": 4,
+    "bathrooms": 5,
+    "hasPool": true,
+    "hasGarden": true,
+    "hasParking": true,
+    "isFurnished": false,
+    "availableFrom": "2024-02-01T00:00:00Z",
+    "availableTo": "2024-11-30T00:00:00Z",
+    "traces": [],
+    "coverImage": "https://blob.vercel-storage.com/properties/cg001/cover.jpg",
+    "images": [
+      {
+        "url": "https://blob.vercel-storage.com/properties/cg001/1.jpg",
+        "index": 1,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/cg001/2.jpg",
+        "index": 2,
+        "enabled": true
+      }
+    ],
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z",
+    "isActive": true
+  },
+  {
+    "id": "prop-003",
+    "ownerId": "owner-003",
+    "name": "Brickell Sky Penthouse",
+    "address": "300 Brickell Ave, Miami, FL",
+    "price": 9800000,
+    "codeInternal": "BK001",
+    "year": 2022,
+    "status": "Active",
+    "cover": {
+      "type": "Image",
+      "url": "https://blob.vercel-storage.com/properties/bk001/cover.jpg",
+      "index": 0
+    },
+    "media": [
+      {
+        "id": "media-006",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/bk001/1.jpg",
+        "index": 1,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-007",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/bk001/2.jpg",
+        "index": 2,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-008",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/bk001/3.jpg",
+        "index": 3,
+        "enabled": true,
+        "featured": false
+      }
+    ],
+    "description": "Ultra-modern penthouse with stunning city and bay views",
+    "city": "Miami",
+    "neighborhood": "Brickell",
+    "propertyType": "Penthouse",
+    "size": 3800,
+    "bedrooms": 3,
+    "bathrooms": 4,
+    "hasPool": true,
+    "hasGarden": false,
+    "hasParking": true,
+    "isFurnished": true,
+    "availableFrom": "2024-01-20T00:00:00Z",
+    "availableTo": "2024-10-31T00:00:00Z",
+    "traces": [],
+    "coverImage": "https://blob.vercel-storage.com/properties/bk001/cover.jpg",
+    "images": [
+      {
+        "url": "https://blob.vercel-storage.com/properties/bk001/1.jpg",
+        "index": 1,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/bk001/2.jpg",
+        "index": 2,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/bk001/3.jpg",
+        "index": 3,
+        "enabled": true
+      }
+    ],
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z",
+    "isActive": true
+  }
 ]
 

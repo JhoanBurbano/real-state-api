@@ -24,10 +24,10 @@ public class PropertyServiceTests
     public async Task List_maps_entities_to_dtos_and_pagination()
     {
         var repo = Substitute.For<IPropertyRepository>();
-        var items = new List<Property> { new Property { Id = "1", IdOwner = "o", Name = "n", AddressProperty = "a", PriceProperty = 10, Image = "i" } };
-        repo.FindAsync(Arg.Any<PropertyListQuery>(), Arg.Any<CancellationToken>()).Returns((items, 1));
+        var items = new List<PropertyListDto> { new PropertyListDto { Id = "1", OwnerId = "o", Name = "n", Address = "a", Price = 10, CoverUrl = "i" } };
+        repo.FindAsync(Arg.Any<PropertyListQuery>(), Arg.Any<CancellationToken>()).Returns((items, 1L));
         var svc = new PropertyService(repo);
-        var result = await svc.GetPropertiesAsync(new PropertyListQuery{ Page = 2, PageSize = 5 }, CancellationToken.None);
+        var result = await svc.GetPropertiesAsync(new PropertyListQuery { Page = 2, PageSize = 5 }, CancellationToken.None);
         result.Total.Should().Be(1);
         result.Page.Should().Be(2);
         result.PageSize.Should().Be(5);

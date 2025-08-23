@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # MongoDB Database (Development - No Auth)
+  mongodb:
+    image: mongo:7.0
+    container_name: million-mongodb-dev
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: million
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_dev:/data/db
+    networks:
+      - million-network-dev
+
+  # Mongo Express (UI para MongoDB - No Auth)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: million-mongo-express-dev
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    networks:
+      - million-network-dev
+
+volumes:
+  mongodb_data_dev:
+
+networks:
+  million-network-dev:
+    driver: bridge
+
