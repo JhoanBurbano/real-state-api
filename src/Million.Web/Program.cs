@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Million.Application.DTOs;
 using Million.Application.DTOs.Auth;
+using Million.Application.Common;
 using Million.Application.Interfaces;
 using Million.Application.Services;
 using Million.Application.Validation;
@@ -17,6 +18,8 @@ using Million.Domain.Exceptions;
 using Million.Domain.Entities;
 using Serilog;
 using System.Text.Json.Serialization;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +83,14 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IExplainService, ExplainService>();
 
+// New services for advanced functionality
+builder.Services.AddScoped<IPropertyTraceRepository, PropertyTraceRepository>();
+builder.Services.AddScoped<IPropertyTraceService, PropertyTraceService>();
+builder.Services.AddScoped<IMediaManagementService, MediaManagementService>();
+builder.Services.AddScoped<IAdvancedSearchService, AdvancedSearchService>();
+builder.Services.AddScoped<IPropertyStatsService, PropertyStatsService>();
+builder.Services.AddScoped<IWebhookService, WebhookService>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -113,6 +124,322 @@ app.UseCors("Allowlist");
 
 app.MapGet("/health/live", () => Results.Ok(new { status = "ok" }));
 app.MapGet("/health/ready", () => Results.Ok(new { status = "ready" }));
+
+// Test MongoDB connection endpoint
+app.MapGet("/test/mongo", async (MongoContext mongoContext) =>
+{
+    try
+    {
+        var collection = mongoContext.GetCollection<BsonDocument>("properties");
+        var count = await collection.CountDocumentsAsync(FilterDefinition<BsonDocument>.Empty);
+        var sample = await collection.Find(FilterDefinition<BsonDocument>.Empty).Limit(1).FirstOrDefaultAsync();
+
+        return Results.Ok(new
+        {
+            success = true,
+            count = count,
+            sample = sample?.ToString()
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"MongoDB test failed: {ex.Message}");
+    }
+});
+
+// Test properties count endpoint
+app.MapGet("/test/properties-count", async (IPropertyService propertyService) =>
+{
+    try
+    {
+        var query = new PropertyListQuery { Page = 1, PageSize = 1 };
+        var result = await propertyService.GetPropertiesAsync(query, CancellationToken.None);
+
+        return Results.Ok(new
+        {
+            success = true,
+            total = result.Total,
+            itemsCount = result.Items.Count,
+            sample = result.Items.FirstOrDefault()
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Properties service test failed: {ex.Message}");
+    }
+});
+
+// Test aggregation pipeline directly
+app.MapGet("/test/aggregation", async (MongoContext mongoContext) =>
+{
+    try
+    {
+        var collection = mongoContext.GetCollection<BsonDocument>("properties");
+
+        // Simple pipeline to test
+        var pipeline = new List<BsonDocument>
+        {
+            new BsonDocument("$match", new BsonDocument("isActive", true)),
+            new BsonDocument("$count", "total")
+        };
+
+        var result = await collection.Aggregate<BsonDocument>(pipeline).ToListAsync();
+        var total = result.FirstOrDefault()?.GetValue("total").AsInt32 ?? 0;
+
+        // Get one sample property
+        var sample = await collection.Find(new BsonDocument("isActive", true)).Limit(1).FirstOrDefaultAsync();
+
+        return Results.Ok(new
+        {
+            success = true,
+            total = total,
+            sample = sample?.ToString()
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Aggregation test failed: {ex.Message}");
+    }
+});
+
+// Test PropertyDocument mapping
+app.MapGet("/test/property-document", async (MongoContext mongoContext) =>
+{
+    try
+    {
+        var collection = mongoContext.GetCollection<PropertyDocument>("properties");
+
+        // Try to find one property using PropertyDocument
+        var property = await collection.Find(x => x.IsActive == true).Limit(1).FirstOrDefaultAsync();
+
+        if (property != null)
+        {
+            return Results.Ok(new
+            {
+                success = true,
+                id = property.Id,
+                name = property.Name,
+                isActive = property.IsActive,
+                coverType = property.Cover?.Type,
+                mediaCount = property.Media?.Count ?? 0
+            });
+        }
+        else
+        {
+            return Results.Ok(new { success = false, message = "No properties found" });
+        }
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"PropertyDocument test failed: {ex.Message}");
+    }
+});
+
+// Test PropertyRepository pipeline
+app.MapGet("/test/repository-pipeline", async (MongoContext mongoContext) =>
+{
+    try
+    {
+        var collection = mongoContext.GetCollection<BsonDocument>("properties");
+
+        // Build the exact filter from PropertyRepository
+        var builder = Builders<BsonDocument>.Filter;
+        var filters = new List<FilterDefinition<BsonDocument>>();
+
+        // Only show active properties by default
+        filters.Add(builder.Eq("isActive", true));
+
+        var filter = filters.Count > 0 ? builder.And(filters) : builder.Empty;
+
+        // Simple pipeline to test the filter
+        var pipeline = new List<BsonDocument>
+        {
+            new BsonDocument("$match", filter.ToBsonDocument()),
+            new BsonDocument("$count", "total")
+        };
+
+        var result = await collection.Aggregate<BsonDocument>(pipeline).ToListAsync();
+        var total = result.FirstOrDefault()?.GetValue("total").AsInt32 ?? 0;
+
+        // Also test with simple find
+        var findResult = await collection.Find(filter).Limit(1).FirstOrDefaultAsync();
+
+        return Results.Ok(new
+        {
+            success = true,
+            total = total,
+            filter = filter.ToBsonDocument().ToString(),
+            sample = findResult?.ToString()
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Repository pipeline test failed: {ex.Message}");
+    }
+});
+
+// Test simple filter
+app.MapGet("/test/simple-filter", async (MongoContext mongoContext) =>
+{
+    try
+    {
+        var collection = mongoContext.GetCollection<BsonDocument>("properties");
+
+        // Test different filter approaches
+        var filter1 = new BsonDocument("isActive", true);
+        var filter2 = Builders<BsonDocument>.Filter.Eq("isActive", true);
+        var filter3 = Builders<BsonDocument>.Filter.Eq("isActive", BsonValue.Create(true));
+
+        var count1 = await collection.CountDocumentsAsync(filter1);
+        var count2 = await collection.CountDocumentsAsync(filter2);
+        var count3 = await collection.CountDocumentsAsync(filter3);
+
+        return Results.Ok(new
+        {
+            success = true,
+            count1 = count1,
+            count2 = count2,
+            count3 = count3,
+            filter1 = filter1.ToString(),
+            filter2 = filter2.ToString(),
+            filter3 = filter3.ToString()
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Simple filter test failed: {ex.Message}");
+    }
+});
+
+// Test complete pipeline step by step
+app.MapGet("/test/complete-pipeline", async (MongoContext mongoContext) =>
+{
+    try
+    {
+        var collection = mongoContext.GetCollection<BsonDocument>("properties");
+
+        // Step 1: Build filter
+        var builder = Builders<BsonDocument>.Filter;
+        var filters = new List<FilterDefinition<BsonDocument>>();
+        filters.Add(builder.Eq("isActive", true));
+        var filter = builder.And(filters);
+
+        // Step 2: Test filter with find
+        var findCount = await collection.CountDocumentsAsync(filter);
+
+        // Step 3: Test filter with aggregation
+        var pipeline = new List<BsonDocument>
+        {
+            new BsonDocument("$match", filter.ToBsonDocument()),
+            new BsonDocument("$count", "total")
+        };
+
+        var aggResult = await collection.Aggregate<BsonDocument>(pipeline).ToListAsync();
+        var aggCount = aggResult.FirstOrDefault()?.GetValue("total").AsInt32 ?? 0;
+
+        // Step 4: Test with raw BsonDocument filter
+        var rawFilter = new BsonDocument("isActive", true);
+        var rawPipeline = new List<BsonDocument>
+        {
+            new BsonDocument("$match", rawFilter),
+            new BsonDocument("$count", "total")
+        };
+
+        var rawResult = await collection.Aggregate<BsonDocument>(rawPipeline).ToListAsync();
+        var rawCount = rawResult.FirstOrDefault()?.GetValue("total").AsInt32 ?? 0;
+
+        return Results.Ok(new
+        {
+            success = true,
+            findCount = findCount,
+            aggCount = aggCount,
+            rawCount = rawCount,
+            filter = filter.ToBsonDocument().ToString(),
+            rawFilter = rawFilter.ToString()
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Complete pipeline test failed: {ex.Message}");
+    }
+});
+
+// Test description field specifically
+app.MapGet("/test/description-field", async (MongoContext mongoContext) =>
+{
+    try
+    {
+        var collection = mongoContext.GetCollection<BsonDocument>("properties");
+
+        // Test 1: Direct find to see raw document
+        var rawDoc = await collection.Find(new BsonDocument("_id", "prop-050")).FirstOrDefaultAsync();
+
+        // Test 2: Simple projection
+        var simplePipeline = new List<BsonDocument>
+        {
+            new BsonDocument("$match", new BsonDocument("_id", "prop-050")),
+            new BsonDocument("$project", new BsonDocument
+            {
+                { "name", 1 },
+                { "description", 1 },
+                { "Description", 1 },
+                { "address", 1 }
+            })
+        };
+
+        var simpleResult = await collection.Aggregate<BsonDocument>(simplePipeline).FirstOrDefaultAsync();
+
+        // Test 3: Full pipeline like the real one
+        var fullPipeline = new List<BsonDocument>
+        {
+            new BsonDocument("$match", new BsonDocument("_id", "prop-050")),
+            new BsonDocument("$project", new BsonDocument
+            {
+                { "name", 1 },
+                { "description", 1 },
+                { "address", 1 },
+                { "price", 1 },
+                { "year", 1 },
+                { "codeInternal", 1 },
+                { "ownerId", 1 },
+                { "status", 1 },
+                { "coverUrl", new BsonDocument("$ifNull", new BsonArray { "$cover.Url", "$cover.Poster" }) },
+                { "totalImages", new BsonDocument("$size", new BsonDocument("$filter", new BsonDocument
+                {
+                    { "input", "$media" },
+                    { "as", "m" },
+                    { "cond", new BsonDocument("$eq", new BsonArray { "$$m.Type", 0 }) }
+                })) },
+                { "totalVideos", new BsonDocument("$size", new BsonDocument("$filter", new BsonDocument
+                {
+                    { "input", "$media" },
+                    { "as", "m" },
+                    { "cond", new BsonDocument("$eq", new BsonArray { "$$m.Type", 1 }) }
+                })) }
+            })
+        };
+
+        var fullResult = await collection.Aggregate<BsonDocument>(fullPipeline).FirstOrDefaultAsync();
+
+        return Results.Ok(new
+        {
+            rawDocument = rawDoc?.ToString(),
+            simpleProjection = simpleResult?.ToString(),
+            fullProjection = fullResult?.ToString(),
+            analysis = new
+            {
+                rawHasDescription = rawDoc?.Contains("description") ?? false,
+                rawHasDescriptionPascal = rawDoc?.Contains("Description") ?? false,
+                simpleHasDescription = simpleResult?.Contains("description") ?? false,
+                fullHasDescription = fullResult?.Contains("description") ?? false
+            }
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Description field test failed: {ex.Message}");
+    }
+}).WithTags("Test");
 
 // Public endpoints (no authentication required)
 app.MapGet("/properties", async (
@@ -262,7 +589,7 @@ else
 }
 
 // Protected endpoints (authentication required)
-app.MapPost("/properties", async (
+app.MapPost("/properties", [RequiresAuth] async (
     CreatePropertyRequest request,
     IValidator<CreatePropertyRequest> validator,
     HttpContext http,
@@ -281,7 +608,7 @@ app.MapPost("/properties", async (
     return Results.Created($"/properties/{createdProperty.Id}", createdProperty);
 }).WithTags("Properties");
 
-app.MapPut("/properties/{id}", async (
+app.MapPut("/properties/{id}", [RequiresAuth] async (
     string id,
     UpdatePropertyRequest request,
     IValidator<UpdatePropertyRequest> validator,
@@ -309,7 +636,7 @@ app.MapPut("/properties/{id}", async (
     }
 }).WithTags("Properties");
 
-app.MapDelete("/properties/{id}", async (
+app.MapDelete("/properties/{id}", [RequiresAuth] async (
     string id,
     HttpContext http,
     IPropertyService service,
@@ -327,7 +654,7 @@ app.MapDelete("/properties/{id}", async (
     }
 }).WithTags("Properties");
 
-app.MapPatch("/properties/{id}/activate", async (
+app.MapPatch("/properties/{id}/activate", [RequiresAuth] async (
     string id,
     HttpContext http,
     IPropertyService service,
@@ -350,7 +677,7 @@ app.MapPatch("/properties/{id}/activate", async (
     }
 }).WithTags("Properties");
 
-app.MapPatch("/properties/{id}/deactivate", async (
+app.MapPatch("/properties/{id}/deactivate", [RequiresAuth] async (
     string id,
     HttpContext http,
     IPropertyService service,
@@ -373,44 +700,233 @@ app.MapPatch("/properties/{id}/deactivate", async (
     }
 }).WithTags("Properties");
 
-// Protected media management endpoints
+// Public media viewing endpoint (no authentication required)
 app.MapGet("/properties/{id}/media", async (
     string id,
-    [AsParameters] MediaQueryDto query,
     IPropertyRepository repository,
     HttpContext http,
     CancellationToken ct) =>
 {
-    var media = await repository.GetMediaAsync(id, query, ct);
-    return Results.Ok(media);
+    try
+    {
+        var property = await repository.GetByIdAsync(id, ct);
+        if (property == null)
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status404NotFound, "Resource Not Found", $"Property {id} not found");
+            return Results.NotFound();
+        }
+
+        var media = property.Media?.Where(m => m.Enabled).OrderBy(m => m.Index).ToList() ?? new List<Media>();
+        var cover = property.Cover;
+
+        return Results.Ok(new
+        {
+            cover = cover != null ? new
+            {
+                type = cover.Type.ToString(),
+                url = cover.Url,
+                poster = cover.Poster,
+                index = cover.Index
+            } : null,
+            gallery = media.Select(m => new
+            {
+                id = m.Id,
+                type = m.Type.ToString(),
+                url = m.Url,
+                poster = m.Poster,
+                index = m.Index,
+                enabled = m.Enabled,
+                featured = m.Featured
+            }).ToList()
+        });
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", $"Failed to retrieve media: {ex.Message}");
+        return Results.Problem($"Failed to retrieve media: {ex.Message}");
+    }
 }).WithTags("Properties");
 
-app.MapPatch("/properties/{id}/media", async (
+app.MapPatch("/properties/{id}/media", [RequiresAuth] async (
     string id,
     MediaPatchDto request,
-    IPropertyRepository repository,
+    IMediaManagementService mediaService,
     HttpContext http,
     CancellationToken ct) =>
 {
-    var success = await repository.UpdateMediaAsync(id, request, ct);
-    if (success)
-        return Results.Ok(new { message = "Media updated successfully" });
-    return Results.NotFound();
+    try
+    {
+        var userId = http.User.FindFirst("ownerId")?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Unauthorized", "Owner ID not found in token");
+            return Results.Unauthorized();
+        }
+
+        var updatedProperty = await mediaService.UpdatePropertyMediaAsync(id, request, userId, ct);
+        return Results.Ok(updatedProperty);
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", $"Failed to update media: {ex.Message}");
+        return Results.Problem($"Failed to update media: {ex.Message}");
+    }
 }).WithTags("Properties");
 
-app.MapPost("/properties/{id}/traces", async (
+// Public property timeline endpoint (no authentication required)
+app.MapGet("/properties/{id}/traces", async (
     string id,
-    PropertyTraceDto request,
-    IPropertyRepository repository,
+    IPropertyTraceService traceService,
     HttpContext http,
     CancellationToken ct) =>
 {
-    var trace = PropertyTrace.Create(request.DateSale, request.Name, request.Value, request.Tax);
-    var success = await repository.AddTraceAsync(id, trace, ct);
-    if (success)
-        return Results.Ok(new { message = "Trace added successfully" });
-    return Results.NotFound();
+    try
+    {
+        var traces = await traceService.GetPropertyTimelineAsync(id, ct);
+        return Results.Ok(traces);
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", $"Failed to retrieve property traces: {ex.Message}");
+        return Results.Problem($"Failed to retrieve property traces: {ex.Message}");
+    }
 }).WithTags("Properties");
+
+// Advanced Search endpoint
+app.MapPost("/properties/search", async (
+    AdvancedSearchRequest request,
+    IAdvancedSearchService searchService,
+    CancellationToken ct) =>
+{
+    try
+    {
+        var results = await searchService.SearchPropertiesAsync(request, ct);
+        return Results.Ok(results);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Search failed: {ex.Message}");
+    }
+}).WithTags("Properties");
+
+// Public Property Statistics endpoint (no authentication required)
+app.MapGet("/stats/properties", async (
+    string? city,
+    string? propertyType,
+    IPropertyStatsService statsService,
+    HttpContext http,
+    CancellationToken ct) =>
+{
+    try
+    {
+        PropertyStatsDto stats;
+        if (!string.IsNullOrEmpty(city))
+        {
+            stats = await statsService.GetStatsByCityAsync(city, ct);
+        }
+        else if (!string.IsNullOrEmpty(propertyType))
+        {
+            stats = await statsService.GetStatsByPropertyTypeAsync(propertyType, ct);
+        }
+        else
+        {
+            stats = await statsService.GetOverallStatsAsync(ct);
+        }
+
+        return Results.Ok(stats);
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", $"Failed to retrieve statistics: {ex.Message}");
+        return Results.Problem($"Failed to retrieve statistics: {ex.Message}");
+    }
+}).WithTags("Statistics");
+
+// Webhooks endpoint for real-time updates
+app.MapPost("/webhooks/property-updated", async (
+    WebhookRequest request,
+    IWebhookService webhookService,
+    CancellationToken ct) =>
+{
+    try
+    {
+        var response = await webhookService.ProcessPropertyUpdateAsync(request, ct);
+        return Results.Ok(response);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Webhook processing failed: {ex.Message}");
+    }
+}).WithTags("Webhooks");
+
+// Metrics endpoint for monitoring
+app.MapGet("/metrics", async (
+    CancellationToken ct) =>
+{
+    try
+    {
+        // Basic metrics for now - can be expanded with Prometheus format
+        var metrics = new
+        {
+            timestamp = DateTime.UtcNow,
+            uptime = Environment.TickCount64,
+            memory = GC.GetTotalMemory(false),
+            activeConnections = 0, // Placeholder
+            requestsPerSecond = 0, // Placeholder
+            errorRate = 0.0 // Placeholder
+        };
+
+        return Results.Ok(metrics);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Failed to retrieve metrics: {ex.Message}");
+    }
+}).WithTags("Monitoring");
+
+// Owner profile endpoint (requires authentication)
+app.MapGet("/owners/profile", [RequiresAuth] async (
+    IAuthService authService,
+    HttpContext http,
+    CancellationToken ct) =>
+{
+    try
+    {
+        // Get owner ID from JWT token (already validated by middleware)
+        var ownerId = http.User.FindFirst("ownerId")?.Value;
+        if (string.IsNullOrEmpty(ownerId))
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Unauthorized", "Owner ID not found in token");
+            return Results.Unauthorized();
+        }
+
+        var owner = await authService.GetOwnerByIdAsync(ownerId, ct);
+        if (owner == null)
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status404NotFound, "Owner Not Found", "Owner not found");
+            return Results.NotFound();
+        }
+
+        // Return owner profile without sensitive information
+        return Results.Ok(new
+        {
+            id = owner.Id,
+            fullName = owner.FullName,
+            email = owner.Email,
+            phoneE164 = owner.PhoneE164,
+            photoUrl = owner.PhotoUrl,
+            role = owner.Role,
+            isActive = owner.IsActive,
+            createdAt = owner.CreatedAt,
+            updatedAt = owner.UpdatedAt
+        });
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", "Failed to retrieve owner profile");
+        return Results.Problem("Failed to retrieve owner profile");
+    }
+}).WithTags("Owners");
 
 // Admin endpoints for managing owners and sessions
 app.MapGet("/admin/owners", async (

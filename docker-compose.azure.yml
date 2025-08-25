@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  million-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+      - "8443:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+      - Mongo__Uri=${MONGO_URI}
+      - Mongo__Database=${MONGO_DATABASE}
+      - JWT__Secret=${JWT_SECRET}
+      - JWT__Issuer=${JWT_ISSUER}
+      - JWT__Audience=${JWT_AUDIENCE}
+      - RateLimiting__MaxRequests=${RATE_LIMITING_MAX_REQUESTS:-100}
+      - RateLimiting__WindowMinutes=${RATE_LIMITING_WINDOW_MINUTES:-1}
+      - Logging__LogLevel__Default=${LOG_LEVEL:-Information}
+      - Logging__LogLevel__Microsoft.AspNetCore=${LOG_LEVEL_ASPNET:-Information}
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - million-network
+
+  mongodb:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+    volumes:
+      - mongodb_data:/data/db
+      - ./ops/db:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - million-network
+
+  azure-app-insights:
+    image: mcr.microsoft.com/azure-application-insights/application-insights:latest
+    environment:
+      - APPLICATIONINSIGHTS_CONNECTION_STRING=${APPINSIGHTS_CONNECTION_STRING}
+    restart: unless-stopped
+    networks:
+      - million-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  million-network:
+    driver: bridge

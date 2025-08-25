@@ -28,6 +28,7 @@ public class PropertiesControllerTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Beautiful luxury villa with ocean view and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
             CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
@@ -38,6 +39,7 @@ public class PropertiesControllerTests
             Id = "prop123",
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Beautiful luxury villa with ocean view and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
             CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
@@ -65,6 +67,7 @@ public class PropertiesControllerTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Beautiful luxury villa with gallery and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
             CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
@@ -81,6 +84,7 @@ public class PropertiesControllerTests
             Id = "prop123",
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Beautiful luxury villa with gallery and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
             CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
@@ -114,6 +118,7 @@ public class PropertiesControllerTests
             Id = "prop123",
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Beautiful luxury villa with ocean view and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
             CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",

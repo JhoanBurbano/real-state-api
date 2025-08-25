@@ -1,0 +1,45 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: million-real-estate-api
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      containers:
+      - image: jsburbano07/million-real-estate-api:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1Gi
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ASPNETCORE_URLS
+          value: "http://+:80"
+        - name: MONGO_URI
+          value: "mongodb+srv://jsburbano:EmpanadasConAji123@pruebastecnicas.sm4lf1d.mongodb.net/?retryWrites=true&w=majority&appName=pruebastecnicas"
+        - name: MONGO_DB
+          value: "million"
+        - name: JWT_SECRET
+          value: "Jf7s9dk2L0qM!a$P@r#xGz8Kq%hN4u"
+        - name: JWT_ISSUER
+          value: "https://test-technicals-jsburbano-uc.run.app"
+        - name: JWT_AUDIENCE
+          value: "https://real-state.jsburbano.dev"
+        - name: RATE_LIMITING_MAX_REQUESTS
+          value: "100"
+        - name: RATE_LIMITING_WINDOW_MINUTES
+          value: "1"
+        - name: LOG_LEVEL_DEFAULT
+          value: "Information"
+        - name: LOG_LEVEL_MICROSOFT_ASPNETCORE
+          value: "Information"

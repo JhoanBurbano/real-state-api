@@ -69,7 +69,15 @@ public static class EnsureIndexes
             activeIndexModel
         };
 
-        await collection.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
+        try
+        {
+            await collection.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
+        }
+        catch (MongoCommandException ex) when (ex.Message.Contains("Index already exists with a different name"))
+        {
+            // Log the warning but continue - indexes might have been created with different names
+            Console.WriteLine($"Warning: Some indexes already exist with different names: {ex.Message}");
+        }
     }
 
     private static async Task EnsureOwnerIndexesAsync(MongoContext context, CancellationToken cancellationToken)
@@ -108,7 +116,15 @@ public static class EnsureIndexes
             fullNameIndexModel
         };
 
-        await collection.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
+        try
+        {
+            await collection.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
+        }
+        catch (MongoCommandException ex) when (ex.Message.Contains("Index already exists with a different name"))
+        {
+            // Log the warning but continue - indexes might have been created with different names
+            Console.WriteLine($"Warning: Some indexes already exist with different names: {ex.Message}");
+        }
     }
 
     private static async Task EnsureOwnerSessionIndexesAsync(MongoContext context, CancellationToken cancellationToken)
@@ -151,7 +167,15 @@ public static class EnsureIndexes
             issuedAtIndexModel
         };
 
-        await collection.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
+        try
+        {
+            await collection.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
+        }
+        catch (MongoCommandException ex) when (ex.Message.Contains("Index already exists with a different name"))
+        {
+            // Log the warning but continue - indexes might have been created with different names
+            Console.WriteLine($"Warning: Some indexes already exist with different names: {ex.Message}");
+        }
     }
 }
 

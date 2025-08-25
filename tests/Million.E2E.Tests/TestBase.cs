@@ -53,7 +53,7 @@ public abstract class TestBase : IDisposable
                     config.AddInMemoryCollection(new Dictionary<string, string?>
                     {
                         ["MONGO_URI"] = MongoContainer.GetConnectionString(),
-                        ["MONGO_DB"] = "million_test",
+                        ["MONGO_DB"] = "million",
                         ["ASPNETCORE_ENVIRONMENT"] = "Testing",
                         ["DOTNET_ENVIRONMENT"] = "Testing",
                         ["SkipProblemDetailsMiddleware"] = "true",
@@ -99,7 +99,9 @@ public abstract class TestBase : IDisposable
                         var options = new MongoOptions
                         {
                             Uri = MongoContainer.GetConnectionString(),
-                            Database = "million_test"
+                            Database = "million",
+                            RootUsername = "admin",
+                            RootPassword = "EmpanadasConAji123"
                         };
                         var optionsWrapper = Options.Create(options);
                         return new MongoContext(optionsWrapper);

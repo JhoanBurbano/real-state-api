@@ -58,8 +58,10 @@ public class GlobalSetup
                 {
                     var options = new MongoOptions
                     {
-                        Uri = "mongodb://localhost:27017/million_test",
-                        Database = "million_test"
+                        Uri = "mongodb+srv://jsburbano:EmpanadasConAji123@pruebastecnicas.sm4lf1d.mongodb.net/?retryWrites=true&w=majority&appName=pruebastecnicas",
+                        Database = "million",
+                        RootUsername = "admin",
+                        RootPassword = "EmpanadasConAji123"
                     };
                     var optionsWrapper = Options.Create(options);
                     return new MongoContext(optionsWrapper);

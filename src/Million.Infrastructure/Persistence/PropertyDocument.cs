@@ -1,9 +1,12 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Million.Domain.Entities;
+using System.Linq;
+using MongoDB.Bson.Serialization.Options;
 
 namespace Million.Infrastructure.Persistence;
 
+[BsonIgnoreExtraElements]
 public class PropertyDocument
 {
     [BsonId]
@@ -35,10 +38,10 @@ public class PropertyDocument
 
     // New media system
     [BsonElement("cover")]
-    public Cover Cover { get; set; } = new();
+    public CoverDocument Cover { get; set; } = new();
 
     [BsonElement("media")]
-    public List<Media> Media { get; set; } = new();
+    public List<MediaDocument> Media { get; set; } = new();
 
     // Legacy fields for backward compatibility
     [BsonElement("coverImage")]
@@ -113,8 +116,8 @@ public class PropertyDocument
             CodeInternal = entity.CodeInternal,
             Year = entity.Year,
             Status = entity.Status,
-            Cover = entity.Cover,
-            Media = entity.Media,
+            Cover = CoverDocument.FromEntity(entity.Cover),
+            Media = entity.Media.Select(m => MediaDocument.FromEntity(m)).ToList(),
             CoverImage = entity.CoverImage,
             Images = entity.Images,
             Description = entity.Description,
@@ -149,8 +152,8 @@ public class PropertyDocument
             CodeInternal = CodeInternal,
             Year = Year,
             Status = Status,
-            Cover = Cover,
-            Media = Media,
+            Cover = Cover.ToEntity(),
+            Media = Media.Select(m => m.ToEntity()).ToList(),
             CoverImage = CoverImage,
             Images = Images,
             Description = Description,

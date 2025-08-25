@@ -1,355 +1,225 @@
-# Million Real Estate API 🏠
+# 🏠 **Million Real Estate API**
 
-A high-performance .NET 9 real estate API with MongoDB, featuring an aggregate root design, advanced media management, and JWT authentication.
+A modern, scalable real estate API built with .NET 9, MongoDB, and deployed on Google Cloud Run.
 
-## ✨ Features
+## 🚀 **Quick Start**
 
-### 🏗️ **Aggregate Root Architecture**
-- **Property Aggregate**: Central entity managing media, traces, and business logic
-- **Media Library**: Featured images (≤12) + paginated library (≤60 total)
-- **Future-Ready**: Video support planned with provider integration
-- **Legacy Support**: Backward compatibility with existing image fields
-
-### 🔐 **Authentication & Authorization**
-- **JWT Tokens**: RS256 signing with configurable TTL
-- **Role-Based Access**: Owner and Admin roles with granular permissions
-- **Session Management**: Refresh token rotation with TTL cleanup
-- **Security**: Argon2id password hashing, account lockout protection
-
-### 📸 **Advanced Media System**
-- **Featured Gallery**: Up to 12 high-quality images for public display
-- **Media Library**: Paginated access to all media with filtering
-- **Vercel Blob Integration**: Direct upload with path validation
-- **Smart Indexing**: Unique indices per media type with gap detection
-
-### 🚀 **Performance & Optimization**
-- **MongoDB Aggregation**: Efficient pipeline for complex queries
-- **Smart Indexing**: Text search, price ranges, media counts
-- **Explain Helper**: Query optimization insights and execution plans
-- **Rate Limiting**: Per-IP/endpoint with burst support
-
-## 🛠️ Technology Stack
-
-- **.NET 9**: Latest framework with minimal APIs
-- **MongoDB**: Document database with aggregation pipelines
-- **JWT**: RS256 authentication with refresh tokens
-- **Argon2id**: State-of-the-art password hashing
-- **Serilog**: Structured logging with correlation IDs
-- **FluentValidation**: Comprehensive input validation
-- **Swagger/OpenAPI**: Interactive API documentation
-
-## 🚀 Quick Start
-
-### Prerequisites
-- .NET 9 SDK
-- MongoDB 6.0+
-- Docker (optional)
-
-### Environment Variables
-```bash
-# MongoDB
-MONGO_URI=mongodb://localhost:27017
-MONGO_DB=million
-
-# JWT Authentication
-AUTH_JWT_ISSUER=your-domain.com
-AUTH_JWT_AUDIENCE=your-app
-AUTH_JWT_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----
-AUTH_JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
-AUTH_ACCESS_TTL_MIN=10
-AUTH_REFRESH_TTL_DAYS=14
-AUTH_LOCKOUT_ATTEMPTS=5
-AUTH_LOCKOUT_WINDOW_MIN=15
-
-# Media Limits
-FEATURED_MEDIA_LIMIT=12
-MEDIA_LIBRARY_LIMIT=60
-MAX_UPLOAD_MB=25
-ENABLE_VIDEO=false
-
-# Rate Limiting
-RATE_LIMIT_PERMINUTE=120
-RATE_LIMIT_BURST=200
-
-# CORS & Logging
-CORS_ORIGINS=http://localhost:3000
-LOG_LEVEL=Information
+### **API Base URL**
+```
+https://million-real-estate-api-sh25jnp3aa-uc.a.run.app
 ```
 
-### Generate JWT Keys
+### **Health Check**
 ```bash
-# Generate private key
-openssl genrsa -out private.pem 2048
-
-# Generate public key
-openssl rsa -in private.pem -pubout -out public.pem
-
-# Convert to base64 for environment variables
-cat private.pem | base64 -w 0
-cat public.pem | base64 -w 0
+curl "https://million-real-estate-api-sh25jnp3aa-uc.a.run.app/health/live"
 ```
 
-### Run the API
+### **Get Properties**
 ```bash
-# Start MongoDB
+curl "https://million-real-estate-api-sh25jnp3aa-uc.a.run.app/properties?page=1&pageSize=5"
+```
+
+## 📚 **Documentation**
+
+- **[API Integration Guide](docs/API_INTEGRATION_GUIDE.md)** - Complete guide for client integration
+- **[API Routes](docs/API_ROUTES.md)** - All available endpoints and parameters
+- **[Architecture](docs/ARCHITECTURE.md)** - System design and architecture
+- **[Error Handling](docs/ERROR_HANDLING.md)** - Error codes and handling
+- **[Database Seeding](docs/SEED_DATABASE.md)** - How to seed the database with test data
+- **[Changelog](docs/CHANGELOG.md)** - Complete history of changes and new features
+
+## 🏗️ **Architecture**
+
+- **Framework**: .NET 9.0
+- **Database**: MongoDB Atlas
+- **Authentication**: JWT with refresh tokens
+- **Deployment**: Google Cloud Run
+- **Container**: Docker
+- **CI/CD**: GitHub Actions
+
+## 🚀 **Deployment**
+
+### **Prerequisites**
+- Docker
+- Google Cloud CLI (`gcloud`)
+- Docker Hub account
+
+### **Quick Deploy to Google Cloud Run**
+
+1. **Build and push to Docker Hub:**
+```bash
+# Login to Docker Hub
+docker login
+
+# Build and push
+docker build -t jsburbano07/million-real-estate-api:latest .
+docker push jsburbano07/million-real-estate-api:latest
+```
+
+2. **Deploy to Google Cloud Run:**
+```bash
+# Set your project ID
+export GCP_PROJECT_ID="your-project-id"
+
+# Run deployment script
+./scripts/gcp-deploy.sh
+```
+
+### **Full CI/CD Pipeline**
+
+Use the GitHub Actions workflow for automated deployment:
+
+```bash
+# Push to main branch triggers automatic deployment
+git push origin main
+```
+
+## 🔧 **Development**
+
+### **Local Development**
+```bash
+# Run with Docker Compose
 docker-compose up -d
-
-# Build and run
-dotnet build
-dotnet run --project src/Million.Web
 
 # Run tests
 dotnet test
+
+# Run API locally
+cd src/Million.Web
+dotnet run
 ```
 
-## 📚 API Endpoints
-
-### 🔐 Authentication
-```
-POST /auth/owner/login          # Owner login
-POST /auth/owner/refresh        # Refresh tokens
-POST /auth/owner/logout         # Revoke session
-```
-
-### 🏠 Properties
-```
-GET    /properties              # List with filters & pagination
-GET    /properties/{id}         # Property details
-POST   /properties              # Create property
-PUT    /properties/{id}         # Update property
-DELETE /properties/{id}         # Delete property
-PATCH  /properties/{id}/activate    # Activate property
-PATCH  /properties/{id}/deactivate  # Deactivate property
-```
-
-### 📸 Media Management
-```
-GET    /properties/{id}/media   # Paginated media library
-PATCH  /properties/{id}/media   # Update media metadata
-POST   /properties/{id}/traces  # Add sales history
-GET    /properties/explain      # Query optimization insights
-```
-
-### 👑 Admin Operations
-```
-GET    /admin/owners            # List all owners
-GET    /admin/owners/{id}       # Owner details
-GET    /admin/owners/{id}/sessions  # Owner sessions
-POST   /admin/owners            # Create owner
-PATCH  /admin/owners/{id}       # Update owner
-POST   /admin/owners/{id}/revoke-session/{sid}  # Revoke session
-```
-
-## 🗄️ Data Model
-
-### Property Aggregate Root
-```json
-{
-  "_id": "string",
-  "ownerId": "string",
-  "name": "string",
-  "address": "string",
-  "price": "decimal",
-  "codeInternal": "string",
-  "year": "int",
-  "status": "active|sold|offmarket",
-  
-  "cover": {
-    "type": "image|video",
-    "url": "string",
-    "poster": "string?"
-  },
-  
-  "media": [
-    {
-      "type": "image|video",
-      "url": "string",
-      "index": "int",
-      "enabled": "bool",
-      "featured": "bool",
-      "variants": {
-        "small": "string?",
-        "medium": "string?",
-        "large": "string?"
-      }
-    }
-  ],
-  
-  "traces": [
-    {
-      "dateSale": "date",
-      "name": "string",
-      "value": "decimal",
-      "tax": "decimal"
-    }
-  ]
-}
-```
-
-### Owner Entity
-```json
-{
-  "_id": "string",
-  "fullName": "string",
-  "email": "string",
-  "phoneE164": "string?",
-  "photoUrl": "string?",
-  "role": "owner|admin",
-  "isActive": "bool",
-  "passwordHash": "string"
-}
-```
-
-## 🔍 Query Examples
-
-### Advanced Property Search
+### **Environment Variables**
 ```bash
-GET /properties?search=luxury&location=malibu&minPrice=1000000&maxPrice=5000000&bedrooms=4&hasPool=true&sort=-price&page=1&pageSize=20
+MONGO_URI=mongodb://localhost:27017
+MONGO_DB=million
+JWT_SECRET=your-secret-key
+JWT_ISSUER=http://localhost:5000
+JWT_AUDIENCE=http://localhost:3000
 ```
 
-### Media Library Access
+## 📊 **Features**
+
+### **🏠 Property Management**
+- ✅ **CRUD Operations** - Full Create, Read, Update, Delete for properties
+- ✅ **Rich Descriptions** - Detailed property descriptions (up to 1000 characters)
+- ✅ **Advanced Search** - Full-text search across name, description, and address
+- ✅ **Comprehensive Filtering** - Price, location, amenities, and more
+- ✅ **Media Support** - Image and video galleries with featured media
+
+### **🔐 Authentication & Security**
+- ✅ **JWT Authentication** - Secure token-based authentication
+- ✅ **Refresh Tokens** - Automatic token renewal
+- ✅ **Owner Profiles** - Authenticated user profile management (`/owners/profile`)
+- ✅ **Rate Limiting** - IP-based protection (100 req/min)
+- ✅ **Input Validation** - Comprehensive FluentValidation rules
+
+### **📱 API Features**
+- ✅ **RESTful Design** - Standard HTTP methods and status codes
+- ✅ **Pagination** - Efficient data pagination with metadata
+- ✅ **Sorting** - Multiple sort options for all endpoints
+- ✅ **Error Handling** - RFC 7807 Problem Details format
+- ✅ **Health Monitoring** - Live and ready health check endpoints
+
+### **🌐 Infrastructure**
+- ✅ **MongoDB Integration** - Document-based data storage
+- ✅ **Docker Support** - Containerized deployment
+- ✅ **Google Cloud Run** - Scalable cloud deployment
+- ✅ **CORS Support** - Configurable cross-origin requests
+- ✅ **Structured Logging** - Serilog with correlation IDs
+
+## 🧪 **Testing**
+
+### **Run Tests**
 ```bash
-GET /properties/mlb001/media?type=image&featured=false&page=1&pageSize=20
+# Unit tests
+dotnet test tests/Million.Tests/
+
+# E2E tests
+dotnet test tests/Million.E2E.Tests/
 ```
 
-### Query Optimization
+### **Test Data**
+The API includes test properties and owners for development and testing.
+
+#### **Seed the Database**
 ```bash
-GET /properties/explain?search=luxury&location=malibu&minPrice=1000000
+# Install Node.js dependencies
+npm install
+
+# Run the seed script
+npm run seed
 ```
 
-## 📸 Vercel Blob Integration
+This will populate the database with 3 sample properties and 3 owners for testing.
 
-### Upload Flow
-1. **Client**: Upload directly to Vercel Blob using `/api/blob/upload`
-2. **Path Structure**: `properties/{id}/cover.ext` and `properties/{id}/{index}.ext`
-3. **Validation**: HTTPS URLs matching Blob path patterns
-4. **Storage**: Only metadata stored in MongoDB
+## 📈 **Monitoring**
 
-### Path Validation
-```
-properties/{id}/cover.(jpg|jpeg|png|webp|avif)
-properties/{id}/[1-9][0-9]*.(jpg|jpeg|png|webp|avif)
-```
+- **Health Checks**: `/health/live` and `/health/ready`
+- **Logs**: Google Cloud Logging
+- **Metrics**: Prometheus-compatible endpoints
+- **Tracing**: Distributed tracing support
 
-## 🔒 Security Features
+## 🔒 **Security**
 
-### Password Security
-- **Argon2id**: Memory-hard hashing with configurable parameters
-- **Salt Management**: Unique salt per password
-- **Iterations**: 3 iterations with 64MB memory usage
+- JWT authentication with refresh tokens
+- Rate limiting (100 requests/minute per IP)
+- Input validation and sanitization
+- HTTPS enforcement
+- CORS configuration
 
-### JWT Security
-- **RS256**: Asymmetric signing for enhanced security
-- **Token Rotation**: Refresh tokens rotated on each use
-- **TTL Management**: Configurable access and refresh token lifetimes
+## 📝 **API Examples**
 
-### Rate Limiting
-- **Per-IP**: Individual client rate limiting
-- **Burst Support**: Configurable burst allowances
-- **Endpoint-Specific**: Different limits per endpoint type
-
-## 🧪 Testing
-
-### Test Coverage
-- **Unit Tests**: NUnit with NSubstitute mocking
-- **Coverage Target**: ≥80% Application layer coverage
-- **Test Categories**: Validators, Services, Controllers, Middleware
-
-### Run Tests
+### **Authentication**
 ```bash
-# All tests
-dotnet test
-
-# Specific test category
-dotnet test --filter "Category=Validators"
-
-# With coverage
-dotnet test --collect:"XPlat Code Coverage"
+# Login
+curl -X POST "https://million-real-estate-api-sh25jnp3aa-uc.a.run.app/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"email": "carlos.rodriguez@million.com", "password": "password"}'
 ```
 
-## 📊 Performance Monitoring
-
-### Health Checks
-```
-GET /health/live    # Liveness probe
-GET /health/ready   # Readiness probe
-```
-
-### Query Optimization
-- **Explain Helper**: Detailed MongoDB execution plans
-- **Index Monitoring**: Performance metrics for all indexes
-- **Aggregation Pipeline**: Optimized for complex queries
-
-## 🚀 Deployment
-
-### Docker Support
+### **Create Property**
 ```bash
-# Build image
-docker build -t million-api .
-
-# Run container
-docker run -p 5000:5000 million-api
+curl -X POST "https://million-real-estate-api-sh25jnp3aa-uc.a.run.app/properties" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "New Property",
+    "description": "Beautiful property with modern amenities and excellent location. Features premium finishes and quality construction.",
+    "address": "123 Main St",
+    "city": "Miami",
+    "price": 500000,
+    "propertyType": "Apartment",
+    "bedrooms": 2,
+    "bathrooms": 2
+  }'
 ```
 
-### Environment Configuration
-- **Development**: Local MongoDB, debug logging
-- **Production**: Production MongoDB, structured logging
-- **Staging**: Staging environment with test data
-
-## 🔄 Migration
-
-### Legacy Image Migration
+### **Get Owner Profile**
 ```bash
-# Run migration command
-dotnet run --project src/Million.Web -- migrate-legacy-images
+curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  "https://million-real-estate-api-sh25jnp3aa-uc.a.run.app/owners/profile"
 ```
 
-### Migration Process
-1. **Legacy Fields**: `coverImage` → `cover.url`
-2. **Gallery Images**: `images[]` → `media[]` with featured flags
-3. **Backward Compatibility**: Legacy fields maintained during transition
-4. **Data Integrity**: Validation and rollback support
+## 🤝 **Contributing**
 
-## 📈 Future Enhancements
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
-### Video Support
-- **Provider Integration**: Mux, Cloudflare, or custom providers
-- **Poster Images**: Required for video media
-- **Duration Tracking**: Video length metadata
-- **Streaming**: Adaptive bitrate streaming
-
-### Advanced Features
-- **Real-time Updates**: WebSocket support for live data
-- **Analytics**: Property view and interaction tracking
-- **Recommendations**: ML-based property suggestions
-- **Multi-language**: Internationalization support
-
-## 🤝 Contributing
-
-1. **Fork** the repository
-2. **Create** a feature branch
-3. **Implement** with tests
-4. **Submit** a pull request
-
-### Code Standards
-- **Clean Architecture**: Clear separation of concerns
-- **Async/Await**: Consistent asynchronous patterns
-- **Validation**: Comprehensive input validation
-- **Error Handling**: RFC 7807 Problem Details
-- **Logging**: Structured logging with correlation IDs
-
-## 📄 License
+## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 📞 **Support**
 
-- **Issues**: GitHub Issues for bug reports
-- **Discussions**: GitHub Discussions for questions
-- **Documentation**: Comprehensive API documentation
-- **Examples**: Sample requests and responses
+- **Documentation**: [docs/](docs/) directory
+- **Issues**: [GitHub Issues](https://github.com/your-repo/issues)
+- **Email**: support@million.com
 
 ---
 
-**Built with ❤️ using .NET 9, MongoDB, and modern web technologies**
+**Built with ❤️ using .NET 9 and MongoDB**
 

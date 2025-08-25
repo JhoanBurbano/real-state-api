@@ -661,9 +661,56 @@ curl -H "X-Correlation-ID: my-request-123" \
 - `X-Page`: Current page number
 - `X-Page-Size`: Items per page
 
-## 🔍 Search Examples
+## 👤 **Owners Endpoints**
 
-### **Basic Search**
+### **GET /owners/profile**
+**Get authenticated owner profile**
+
+**Authentication:** Required (JWT Token)
+
+**Request Headers:**
+```http
+Authorization: Bearer {JWT_TOKEN}
+Content-Type: application/json
+```
+
+**Response (200 OK):**
+```json
+{
+  "id": "owner-001",
+  "fullName": "Carlos Rodriguez",
+  "email": "carlos.rodriguez@million.com",
+  "phoneE164": "+13055551234",
+  "photoUrl": "https://blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
+  "role": "Owner",
+  "isActive": true,
+  "createdAt": "2024-01-01T00:00:00Z",
+  "updatedAt": "2024-01-01T00:00:00Z"
+}
+```
+
+**Response (401 Unauthorized):**
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc7235#section-3.1",
+  "title": "Unauthorized",
+  "status": 401,
+  "detail": "Missing or invalid authorization token",
+  "instance": "/owners/profile",
+  "timestamp": "2024-01-01T00:00:00Z",
+  "extensions": {
+    "correlationId": "uuid",
+    "requestId": "request-id",
+    "endpoint": "/owners/profile",
+    "method": "GET",
+    "clientIp": "127.0.0.1"
+  }
+}
+```
+
+---
+
+## 🔍 Search Examples
 ```bash
 # Search for properties with "miami" in name, description, or address
 GET /properties?search=miami&page=1&pageSize=20

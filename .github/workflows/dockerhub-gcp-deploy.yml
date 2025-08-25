@@ -1,0 +1,151 @@
+name: Deploy to Docker Hub and Google Cloud
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+
+env:
+  DOCKER_HUB_USERNAME: jsburbano07
+  DOCKER_HUB_IMAGE_NAME: million-real-estate-api
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_REGION: us-central1
+  CLOUD_RUN_SERVICE_NAME: million-real-estate-api
+
+jobs:
+  build-and-push:
+    name: Build and Push to Docker Hub
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+          
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        
+    - name: Output image info
+      run: |
+        echo "Image: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_IMAGE_NAME }}"
+        echo "Tags: ${{ steps.meta.outputs.tags }}"
+        
+  deploy-to-gcp:
+    name: Deploy to Google Cloud Run
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.event_name != 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Google Auth
+      id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+        
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ env.GCP_PROJECT_ID }}
+        
+    - name: Authorize Docker push
+      run: gcloud auth configure-docker
+      
+    - name: Deploy to Cloud Run
+      id: deploy
+      uses: google-github-actions/deploy-cloudrun@v2
+      with:
+        service: ${{ env.CLOUD_RUN_SERVICE_NAME }}
+        region: ${{ env.GCP_REGION }}
+        image: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_IMAGE_NAME }}:latest
+        env_vars: |
+          ASPNETCORE_ENVIRONMENT=Production
+          ASPNETCORE_URLS=http://+:80
+          MONGO__URI=${{ secrets.MONGO_URI }}
+          MONGO__DATABASE=${{ secrets.MONGO_DATABASE }}
+          JWT__SECRET=${{ secrets.JWT_SECRET }}
+          JWT__ISSUER=${{ secrets.JWT_ISSUER }}
+          JWT__AUDIENCE=${{ secrets.JWT_AUDIENCE }}
+          RATE_LIMITING__MAX_REQUESTS=${{ secrets.RATE_LIMITING_MAX_REQUESTS }}
+          RATE_LIMITING__WINDOW_MINUTES=${{ secrets.RATE_LIMITING_WINDOW_MINUTES }}
+          LOG_LEVEL__DEFAULT=${{ secrets.LOG_LEVEL }}
+          LOG_LEVEL__MICROSOFT_ASPNETCORE=${{ secrets.LOG_LEVEL_ASPNET }}
+        memory: 1Gi
+        cpu: 1
+        max_instances: 10
+        min_instances: 0
+        allow_unauthenticated: true
+        port: 80
+        
+    - name: Show service URL
+      run: echo "Service URL ${{ steps.deploy.outputs.url }}"
+      
+    - name: Health check
+      run: |
+        echo "Waiting for service to be ready..."
+        sleep 30
+        curl -f ${{ steps.deploy.outputs.url }}/health || exit 1
+        
+  notify:
+    name: Notify deployment status
+    runs-on: ubuntu-latest
+    needs: [build-and-push, deploy-to-gcp]
+    if: always()
+    
+    steps:
+    - name: Notify success
+      if: needs.build-and-push.result == 'success' && needs.deploy-to-gcp.result == 'success'
+      run: |
+        echo "🎉 Deployment successful!"
+        echo "Docker Hub: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_IMAGE_NAME }}"
+        echo "GCP Service: ${{ needs.deploy-to-gcp.outputs.url }}"
+        
+    - name: Notify failure
+      if: needs.build-and-push.result == 'failure' || needs.deploy-to-gcp.result == 'failure'
+      run: |
+        echo "❌ Deployment failed!"
+        echo "Build status: ${{ needs.build-and-push.result }}"
+        echo "Deploy status: ${{ needs.deploy-to-gcp.result }}"

@@ -26,7 +26,7 @@ public static class LegacyImageMigration
             if (!string.IsNullOrEmpty(property.CoverImage))
             {
                 var cover = Cover.CreateImage(property.CoverImage);
-                updates.Add(Builders<PropertyDocument>.Update.Set(x => x.Cover, cover));
+                updates.Add(Builders<PropertyDocument>.Update.Set(x => x.Cover, CoverDocument.FromEntity(cover)));
 
                 // Clear legacy field
                 updates.Add(Builders<PropertyDocument>.Update.Set(x => x.CoverImage, ""));
@@ -56,7 +56,8 @@ public static class LegacyImageMigration
 
                 if (media.Any())
                 {
-                    updates.Add(Builders<PropertyDocument>.Update.Set(x => x.Media, media));
+                    var mediaDocuments = media.Select(m => MediaDocument.FromEntity(m)).ToList();
+                    updates.Add(Builders<PropertyDocument>.Update.Set(x => x.Media, mediaDocuments));
                 }
 
                 // Clear legacy field

@@ -2,18 +2,17 @@ using Microsoft.Extensions.Primitives;
 using Million.Application.Interfaces;
 using Million.Domain.Entities;
 using Million.Domain.Exceptions;
+using System.Security.Claims;
 
 namespace Million.Web.Middlewares;
 
 public class JwtAuthMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IAuthService _authService;
 
-    public JwtAuthMiddleware(RequestDelegate next, IAuthService authService)
+    public JwtAuthMiddleware(RequestDelegate next)
     {
         _next = next;
-        _authService = authService;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -48,8 +47,11 @@ public class JwtAuthMiddleware
 
         try
         {
+            // Get auth service from service provider
+            var authService = context.RequestServices.GetRequiredService<IAuthService>();
+
             // Validate token and get owner
-            var owner = await _authService.GetOwnerFromTokenAsync(token, context.RequestAborted);
+            var owner = await authService.GetOwnerFromTokenAsync(token, context.RequestAborted);
             if (owner == null || !owner.IsActive)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -77,6 +79,19 @@ public class JwtAuthMiddleware
             context.Items["Owner"] = owner;
             context.Items["OwnerId"] = owner.Id;
             context.Items["OwnerRole"] = owner.Role;
+
+            // Create claims principal for the user
+            var claims = new List<Claim>
+            {
+                new Claim("ownerId", owner.Id),
+                new Claim("email", owner.Email),
+                new Claim("role", owner.Role.ToString()),
+                new Claim("sub", owner.Id)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Bearer");
+            var principal = new ClaimsPrincipal(identity);
+            context.User = principal;
 
             await _next(context);
         }

@@ -14,6 +14,62 @@ public class PropertyCreateValidatorTests
     }
 
     [Test]
+    public void Should_accept_valid_property_with_description()
+    {
+        // Arrange
+        var request = new CreatePropertyRequest
+        {
+            OwnerId = "owner123",
+            Name = "Luxury Villa",
+            Description = "Beautiful luxury villa with ocean view, modern amenities, and spacious rooms. Perfect for families seeking comfort and elegance.",
+            Address = "123 Ocean Drive",
+            City = "Miami Beach",
+            PropertyType = "Villa",
+            Price = 2500000,
+            CodeInternal = "LV001",
+            Year = 2020,
+            Size = 500,
+            Bedrooms = 4,
+            Bathrooms = 3,
+            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+        };
+
+        // Act
+        var result = _validator.TestValidate(request);
+
+        // Assert
+        result.ShouldNotHaveAnyValidationErrors();
+    }
+
+    [Test]
+    public void Should_reject_property_with_description_too_long()
+    {
+        // Arrange
+        var request = new CreatePropertyRequest
+        {
+            OwnerId = "owner123",
+            Name = "Luxury Villa",
+            Description = new string('A', 1001), // Exceeds 1000 character limit
+            Address = "123 Ocean Drive",
+            City = "Miami Beach",
+            PropertyType = "Villa",
+            Price = 2500000,
+            CodeInternal = "LV001",
+            Year = 2020,
+            Size = 500,
+            Bedrooms = 4,
+            Bathrooms = 3,
+            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+        };
+
+        // Act
+        var result = _validator.TestValidate(request);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Description);
+    }
+
+    [Test]
     public void Should_accept_valid_property_with_cover_only()
     {
         // Arrange
@@ -21,6 +77,7 @@ public class PropertyCreateValidatorTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Luxury villa with modern amenities",
             Address = "123 Ocean Drive",
             City = "Miami Beach",
             PropertyType = "Villa",
@@ -48,6 +105,7 @@ public class PropertyCreateValidatorTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Luxury villa with gallery and modern amenities",
             Address = "123 Ocean Drive",
             City = "Miami Beach",
             PropertyType = "Villa",
@@ -81,6 +139,7 @@ public class PropertyCreateValidatorTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Luxury villa with maximum gallery and modern amenities",
             Address = "123 Ocean Drive",
             City = "Miami Beach",
             PropertyType = "Villa",
@@ -111,6 +170,7 @@ public class PropertyCreateValidatorTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Luxury villa with modern amenities",
             Address = "123 Ocean Drive",
             City = "Miami Beach",
             PropertyType = "Villa",
@@ -139,6 +199,7 @@ public class PropertyCreateValidatorTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Luxury villa with gallery and modern amenities",
             Address = "123 Ocean Drive",
             City = "Miami Beach",
             PropertyType = "Villa",
@@ -169,6 +230,7 @@ public class PropertyCreateValidatorTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Luxury villa with modern amenities",
             Address = "123 Ocean Drive",
             City = "Miami Beach",
             PropertyType = "Villa",
@@ -196,6 +258,7 @@ public class PropertyCreateValidatorTests
         {
             OwnerId = "owner123",
             Name = "Luxury Villa",
+            Description = "Luxury villa with modern amenities",
             Address = "123 Ocean Drive",
             City = "Miami Beach",
             PropertyType = "Villa",

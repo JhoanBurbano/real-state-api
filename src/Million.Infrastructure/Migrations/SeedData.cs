@@ -109,7 +109,14 @@ public static class SeedData
                 AvailableTo = DateTime.UtcNow.AddDays(365),
                 Traces = new List<PropertyTrace>
                 {
-                    PropertyTrace.Create(DateTime.UtcNow.AddYears(-1), "Previous Sale", 2200000, 150000)
+                    PropertyTrace.Create(
+                        Guid.NewGuid().ToString(),
+                        TraceAction.Sold,
+                        "2200000",
+                        "2350000",
+                        sampleOwner.Id,
+                        "Previous sale transaction"
+                    )
                 },
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,

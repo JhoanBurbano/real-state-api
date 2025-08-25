@@ -20,104 +20,108 @@ public class PropertyRepository : IPropertyRepository
 
     public async Task<(IReadOnlyList<PropertyListDto> Items, long Total)> FindAsync(PropertyListQuery query, CancellationToken cancellationToken)
     {
-        var filters = new List<FilterDefinition<PropertyDocument>>();
-        var builder = Builders<PropertyDocument>.Filter;
+        // Build match filter for aggregation pipeline using direct BsonDocument
+        var matchConditions = new List<BsonDocument>();
 
         // Basic filters
         if (query.MinPrice.HasValue)
-            filters.Add(builder.Gte(x => x.Price, query.MinPrice.Value));
+            matchConditions.Add(new BsonDocument("price", new BsonDocument("$gte", query.MinPrice.Value)));
 
         if (query.MaxPrice.HasValue)
-            filters.Add(builder.Lte(x => x.Price, query.MaxPrice.Value));
+            matchConditions.Add(new BsonDocument("price", new BsonDocument("$lte", query.MaxPrice.Value)));
 
         // Advanced filters
         if (!string.IsNullOrWhiteSpace(query.Search))
         {
-            var searchFilter = builder.Or(
-                builder.Regex(x => x.Name, new BsonRegularExpression(query.Search, "i")),
-                builder.Regex(x => x.Description, new BsonRegularExpression(query.Search, "i")),
-                builder.Regex(x => x.Address, new BsonRegularExpression(query.Search, "i")),
-                builder.Regex(x => x.City, new BsonRegularExpression(query.Search, "i")),
-                builder.Regex(x => x.Neighborhood, new BsonRegularExpression(query.Search, "i"))
-            );
-            filters.Add(searchFilter);
+            var searchConditions = new List<BsonDocument>
+            {
+                new BsonDocument("name", new BsonRegularExpression(query.Search, "i")),
+                new BsonDocument("description", new BsonRegularExpression(query.Search, "i")),
+                new BsonDocument("address", new BsonRegularExpression(query.Search, "i")),
+                new BsonDocument("city", new BsonRegularExpression(query.Search, "i")),
+                new BsonDocument("neighborhood", new BsonRegularExpression(query.Search, "i"))
+            };
+            matchConditions.Add(new BsonDocument("$or", new BsonArray(searchConditions)));
         }
 
         if (!string.IsNullOrWhiteSpace(query.Location))
         {
-            var locationFilter = builder.Or(
-                builder.Regex(x => x.City, new BsonRegularExpression(query.Location, "i")),
-                builder.Regex(x => x.Neighborhood, new BsonRegularExpression(query.Location, "i"))
-            );
-            filters.Add(locationFilter);
+            var locationConditions = new List<BsonDocument>
+            {
+                new BsonDocument("city", new BsonRegularExpression(query.Location, "i")),
+                new BsonDocument("neighborhood", new BsonRegularExpression(query.Location, "i"))
+            };
+            matchConditions.Add(new BsonDocument("$or", new BsonArray(locationConditions)));
         }
 
         if (!string.IsNullOrWhiteSpace(query.PropertyType))
-            filters.Add(builder.Regex(x => x.PropertyType, new BsonRegularExpression(query.PropertyType, "i")));
+            matchConditions.Add(new BsonDocument("propertyType", new BsonRegularExpression(query.PropertyType, "i")));
 
         if (query.Bedrooms.HasValue)
-            filters.Add(builder.Eq(x => x.Bedrooms, query.Bedrooms.Value));
+            matchConditions.Add(new BsonDocument("bedrooms", query.Bedrooms.Value));
 
         if (query.Bathrooms.HasValue)
-            filters.Add(builder.Eq(x => x.Bathrooms, query.Bathrooms.Value));
+            matchConditions.Add(new BsonDocument("bathrooms", query.Bathrooms.Value));
 
         if (query.MinSize.HasValue)
-            filters.Add(builder.Gte(x => x.Size, query.MinSize.Value));
+            matchConditions.Add(new BsonDocument("size", new BsonDocument("$gte", query.MinSize.Value)));
 
         if (query.MaxSize.HasValue)
-            filters.Add(builder.Lte(x => x.Size, query.MaxSize.Value));
+            matchConditions.Add(new BsonDocument("size", new BsonDocument("$lte", query.MaxSize.Value)));
 
         if (query.HasPool.HasValue)
-            filters.Add(builder.Eq(x => x.HasPool, query.HasPool.Value));
+            matchConditions.Add(new BsonDocument("hasPool", query.HasPool.Value));
 
         if (query.HasGarden.HasValue)
-            filters.Add(builder.Eq(x => x.HasGarden, query.HasPool.Value));
+            matchConditions.Add(new BsonDocument("hasGarden", query.HasGarden.Value));
 
         if (query.HasParking.HasValue)
-            filters.Add(builder.Eq(x => x.HasParking, query.HasParking.Value));
+            matchConditions.Add(new BsonDocument("hasParking", query.HasParking.Value));
 
         if (query.IsFurnished.HasValue)
-            filters.Add(builder.Eq(x => x.IsFurnished, query.IsFurnished.Value));
+            matchConditions.Add(new BsonDocument("isFurnished", query.IsFurnished.Value));
 
         if (!string.IsNullOrWhiteSpace(query.IdOwner))
-            filters.Add(builder.Eq(x => x.OwnerId, query.IdOwner));
+            matchConditions.Add(new BsonDocument("ownerId", query.IdOwner));
 
         if (query.AvailableFrom.HasValue)
-            filters.Add(builder.Lte(x => x.AvailableFrom, query.AvailableFrom.Value));
+            matchConditions.Add(new BsonDocument("availableFrom", new BsonDocument("$lte", query.AvailableFrom.Value)));
 
         if (query.AvailableTo.HasValue)
-            filters.Add(builder.Gte(x => x.AvailableTo, query.AvailableTo.Value));
+            matchConditions.Add(new BsonDocument("availableTo", new BsonDocument("$gte", query.AvailableTo.Value)));
 
         // Only show active properties by default
-        filters.Add(builder.Eq(x => x.IsActive, true));
+        matchConditions.Add(new BsonDocument("isActive", true));
 
-        var filter = filters.Count > 0 ? builder.And(filters) : builder.Empty;
+        // Build match filter
+        var matchFilter = matchConditions.Count == 1 ? matchConditions[0] : new BsonDocument("$and", new BsonArray(matchConditions));
 
         // Use aggregation pipeline for optimized listing
         var pipeline = new List<BsonDocument>
         {
-            new BsonDocument("$match", filter.ToBsonDocument()),
+            new BsonDocument("$match", matchFilter),
             new BsonDocument("$project", new BsonDocument
             {
                 { "name", 1 },
+                { "description", 1 },
                 { "address", 1 },
                 { "price", 1 },
                 { "year", 1 },
                 { "codeInternal", 1 },
                 { "ownerId", 1 },
                 { "status", 1 },
-                { "coverUrl", new BsonDocument("$ifNull", new BsonArray { "$cover.url", "$cover.poster" }) },
+                { "coverUrl", new BsonDocument("$ifNull", new BsonArray { "$cover.Url", "$cover.Poster" }) },
                 { "totalImages", new BsonDocument("$size", new BsonDocument("$filter", new BsonDocument
                 {
                     { "input", "$media" },
                     { "as", "m" },
-                    { "cond", new BsonDocument("$eq", new BsonArray { "$$m.type", 0 }) } // MediaType.Image = 0
+                    { "cond", new BsonDocument("$eq", new BsonArray { "$$m.Type", 0 }) } // MediaType.Image = 0
                 })) },
                 { "totalVideos", new BsonDocument("$size", new BsonDocument("$filter", new BsonDocument
                 {
                     { "input", "$media" },
                     { "as", "m" },
-                    { "cond", new BsonDocument("$eq", new BsonArray { "$$m.type", 1 }) } // MediaType.Video = 1
+                    { "cond", new BsonDocument("$eq", new BsonArray { "$$m.Type", 1 }) } // MediaType.Video = 1
                 })) }
             }),
             new BsonDocument("$addFields", new BsonDocument
@@ -143,8 +147,9 @@ public class PropertyRepository : IPropertyRepository
             {
                 Id = item["_id"].AsString,
                 Name = item["name"].AsString,
+                Description = item["description"].AsString,
                 Address = item["address"].AsString,
-                Price = item["price"].AsDecimal,
+                Price = item["price"].BsonType == BsonType.Int32 ? item["price"].AsInt32 : item["price"].AsDecimal,
                 Year = item["year"].AsInt32,
                 CodeInternal = item["codeInternal"].AsString,
                 OwnerId = item["ownerId"].AsString,
@@ -155,7 +160,7 @@ public class PropertyRepository : IPropertyRepository
                 TotalVideos = item["totalVideos"].AsInt32
             }).ToList() ?? new List<PropertyListDto>();
 
-        var total = result.FirstOrDefault()?.GetValue("total").AsBsonArray.FirstOrDefault()?.AsBsonDocument.GetValue("count").AsInt64 ?? 0;
+        var total = result.FirstOrDefault()?.GetValue("total").AsBsonArray.FirstOrDefault()?.AsBsonDocument.GetValue("count").AsInt32 ?? 0;
 
         return (items, total);
     }
@@ -265,30 +270,38 @@ public class PropertyRepository : IPropertyRepository
         var filter = Builders<PropertyDocument>.Filter.Eq(x => x.Id, propertyId);
         var updates = new List<UpdateDefinition<PropertyDocument>>();
 
-        if (mediaPatch.Index.HasValue)
-            updates.Add(Builders<PropertyDocument>.Update.Set("media.$[elem].index", mediaPatch.Index.Value));
-        if (mediaPatch.Featured.HasValue)
-            updates.Add(Builders<PropertyDocument>.Update.Set("media.$[elem].featured", mediaPatch.Featured.Value));
-        if (mediaPatch.Enabled.HasValue)
-            updates.Add(Builders<PropertyDocument>.Update.Set("media.$[elem].enabled", mediaPatch.Enabled.Value));
-        if (!string.IsNullOrEmpty(mediaPatch.Url))
-            updates.Add(Builders<PropertyDocument>.Update.Set("media.$[elem].url", mediaPatch.Url));
-        if (!string.IsNullOrEmpty(mediaPatch.Poster))
-            updates.Add(Builders<PropertyDocument>.Update.Set("media.$[elem].poster", mediaPatch.Poster));
-        if (mediaPatch.Variants != null)
-            updates.Add(Builders<PropertyDocument>.Update.Set("media.$[elem].variants", mediaPatch.Variants));
+        // Update cover if provided
+        if (mediaPatch.Cover != null)
+        {
+            var cover = new Cover
+            {
+                Type = mediaPatch.Cover.Type.ToLowerInvariant() == "video" ? MediaType.Video : MediaType.Image,
+                Url = mediaPatch.Cover.Url,
+                Index = mediaPatch.Cover.Index
+            };
+            updates.Add(Builders<PropertyDocument>.Update.Set("cover", cover));
+        }
 
-        updates.Add(Builders<PropertyDocument>.Update.Set(x => x.UpdatedAt, DateTime.UtcNow));
+        // Update gallery if provided
+        if (mediaPatch.Gallery != null)
+        {
+            var media = mediaPatch.Gallery.Select(g => new Media
+            {
+                Id = g.Id ?? Guid.NewGuid().ToString(),
+                Type = g.Type.ToLowerInvariant() == "video" ? MediaType.Video : MediaType.Image,
+                Url = g.Url,
+                Index = g.Index,
+                Enabled = g.Enabled,
+                Featured = g.Featured
+            }).ToList();
+
+            updates.Add(Builders<PropertyDocument>.Update.Set("media", media));
+        }
+
+        updates.Add(Builders<PropertyDocument>.Update.Set("updatedAt", DateTime.UtcNow));
 
         var combinedUpdate = Builders<PropertyDocument>.Update.Combine(updates);
-
-        var arrayFilters = new List<ArrayFilterDefinition>
-        {
-            new BsonDocumentArrayFilterDefinition<BsonValue>(new BsonDocument("elem._id", mediaPatch.MediaId))
-        };
-
-        var options = new UpdateOptions { ArrayFilters = arrayFilters };
-        var result = await _collection.UpdateOneAsync(filter, combinedUpdate, options, cancellationToken);
+        var result = await _collection.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
         return result.ModifiedCount > 0;
     }
 
