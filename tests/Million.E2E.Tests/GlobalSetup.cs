@@ -7,107 +7,162 @@ using Million.Infrastructure.Persistence;
 using Million.Infrastructure.Migrations;
 using Million.Application.Services;
 using Million.Infrastructure.Services;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using Million.Domain.Entities;
 
 namespace Million.E2E.Tests;
 
 [SetUpFixture]
 public class GlobalSetup
 {
-    public static IHost TestHost { get; private set; } = null!;
-    public static IServiceScope TestScope { get; private set; } = null!;
-    public static MongoContext TestMongoContext { get; private set; } = null!;
+    private static MongoClient? _client;
+    private static IMongoDatabase? _database;
+    private static string? _connectionString;
 
     [OneTimeSetUp]
-    public async Task GlobalOneTimeSetUp()
+    public async Task GlobalSetupAsync()
     {
-        // Configure test environment
+        // Load configuration from environment variables or appsettings
         var configuration = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                ["ASPNETCORE_ENVIRONMENT"] = "Testing",
-                ["LOG_LEVEL"] = "Warning",
-                ["RATE_LIMIT_PERMINUTE"] = "1000",
-                ["RATE_LIMIT_BURST"] = "2000",
-                ["RATE_LIMIT_ENABLE_BURST"] = "true",
-                ["AUTH_JWT_ISSUER"] = "https://test.million.com",
-                ["AUTH_JWT_AUDIENCE"] = "https://test.million.com",
-                ["AUTH_ACCESS_TTL_MIN"] = "60",
-                ["AUTH_REFRESH_TTL_DAYS"] = "30",
-                ["AUTH_LOCKOUT_ATTEMPTS"] = "10",
-                ["AUTH_LOCKOUT_WINDOW_MIN"] = "30",
-                ["FEATURED_MEDIA_LIMIT"] = "12",
-                ["MEDIA_LIBRARY_LIMIT"] = "60",
-                ["MAX_UPLOAD_MB"] = "25",
-                ["ENABLE_VIDEO"] = "false"
-            })
+            .AddEnvironmentVariables()
+            .AddJsonFile("appsettings.test.json", optional: true)
             .Build();
 
-        // Create test host
-        TestHost = Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration((context, config) =>
-            {
-                config.AddConfiguration(configuration);
-            })
-            .ConfigureServices(services =>
-            {
-                // Add test services
-                services.AddSingleton<IConfiguration>(configuration);
+        // Use environment variable for MongoDB URI - NEVER hardcode credentials
+        _connectionString = configuration.GetConnectionString("MongoDB")
+            ?? Environment.GetEnvironmentVariable("MONGODB_URI")
+            ?? "mongodb://localhost:27017";
 
-                // Configure test MongoDB context
-                services.AddSingleton<MongoContext>(provider =>
-                {
-                    var options = new MongoOptions
-                    {
-                        Uri = "mongodb+srv://jsburbano:EmpanadasConAji123@pruebastecnicas.sm4lf1d.mongodb.net/?retryWrites=true&w=majority&appName=pruebastecnicas",
-                        Database = "million",
-                        RootUsername = "admin",
-                        RootPassword = "EmpanadasConAji123"
-                    };
-                    var optionsWrapper = Options.Create(options);
-                    return new MongoContext(optionsWrapper);
-                });
+        Console.WriteLine($"Connecting to MongoDB: {_connectionString.Replace(_connectionString.Split('@')[0], "***")}");
 
-                // Add other required services
-                services.AddMemoryCache();
-                services.AddHttpClient();
-
-                // Add application services needed for seeding
-                services.AddScoped<IPasswordService, PasswordService>();
-            })
-            .Build();
-
-        await TestHost.StartAsync();
-
-        TestScope = TestHost.Services.CreateScope();
-        TestMongoContext = TestScope.ServiceProvider.GetRequiredService<MongoContext>();
-
-        // Initialize test database
-        await InitializeTestDatabaseAsync();
-    }
-
-    [OneTimeTearDown]
-    public async Task GlobalOneTimeTearDown()
-    {
-        TestScope?.Dispose();
-        await TestHost?.StopAsync();
-        TestHost?.Dispose();
-    }
-
-    private static async Task InitializeTestDatabaseAsync()
-    {
         try
         {
-            // Create indexes
-            await EnsureIndexes.RunAsync(TestMongoContext, CancellationToken.None);
+            _client = new MongoClient(_connectionString);
+            _database = _client.GetDatabase("million_test");
+
+            // Test connection
+            await _database.RunCommandAsync((Command<BsonDocument>)"{ping:1}");
+            Console.WriteLine("✅ MongoDB connection successful");
+
+            // Clean up test database
+            await CleanupTestDataAsync();
+            Console.WriteLine("✅ Test database cleaned up");
 
             // Seed test data
-            var passwordService = TestScope.ServiceProvider.GetRequiredService<IPasswordService>();
-            await SeedData.SeedAsync(TestMongoContext, passwordService, CancellationToken.None);
+            await SeedTestDataAsync();
+            Console.WriteLine("✅ Test data seeded successfully");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error initializing test database: {ex.Message}");
+            Console.WriteLine($"❌ MongoDB connection failed: {ex.Message}");
             throw;
         }
     }
+
+    [OneTimeTearDown]
+    public async Task GlobalTearDownAsync()
+    {
+        try
+        {
+            if (_database != null)
+            {
+                // Clean up test database
+                await CleanupTestDataAsync();
+                Console.WriteLine("✅ Test database cleaned up");
+            }
+
+            _client?.Dispose();
+            Console.WriteLine("✅ MongoDB connection closed");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error during cleanup: {ex.Message}");
+        }
+    }
+
+    private static async Task CleanupTestDataAsync()
+    {
+        if (_database == null) return;
+
+        var collections = await _database.ListCollectionNamesAsync();
+        var collectionNames = await collections.ToListAsync();
+
+        foreach (var collectionName in collectionNames)
+        {
+            await _database.DropCollectionAsync(collectionName);
+        }
+    }
+
+    private static async Task SeedTestDataAsync()
+    {
+        if (_database == null) return;
+
+        // Seed test owners
+        var ownersCollection = _database.GetCollection<OwnerDocument>("owners");
+        var testOwners = new List<OwnerDocument>
+        {
+            new()
+            {
+                Id = "test-owner-001",
+                FullName = "Test Owner 1",
+                Email = "test1@example.com",
+                PhoneE164 = "+1234567890",
+                Role = Domain.Entities.OwnerRole.Owner,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            },
+            new()
+            {
+                Id = "test-owner-002",
+                FullName = "Test Owner 2",
+                Email = "test2@example.com",
+                PhoneE164 = "+1234567891",
+                Role = Domain.Entities.OwnerRole.Admin,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            }
+        };
+
+        await ownersCollection.InsertManyAsync(testOwners);
+
+        // Seed test properties
+        var propertiesCollection = _database.GetCollection<PropertyDocument>("properties");
+        var testProperties = new List<PropertyDocument>
+        {
+            new()
+            {
+                Id = "test-prop-001",
+                Name = "Test Property 1",
+                Description = "Test property description",
+                Address = "123 Test St, Test City, FL",
+                Price = 1000000,
+                Year = 2020,
+                Status = Domain.Entities.PropertyStatus.Active,
+                OwnerId = "test-owner-001",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            },
+            new()
+            {
+                Id = "test-prop-002",
+                Name = "Test Property 2",
+                Description = "Another test property",
+                Address = "456 Test Ave, Test City, FL",
+                Price = 2000000,
+                Year = 2021,
+                Status = Domain.Entities.PropertyStatus.Active,
+                OwnerId = "test-owner-002",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            }
+        };
+
+        await propertiesCollection.InsertManyAsync(testProperties);
+    }
+
+    public static MongoClient? GetMongoClient() => _client;
+    public static IMongoDatabase? GetTestDatabase() => _database;
 }

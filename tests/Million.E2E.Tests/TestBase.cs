@@ -20,6 +20,9 @@ using FluentAssertions;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Million.E2E.Tests;
 
@@ -101,7 +104,7 @@ public abstract class TestBase : IDisposable
                             Uri = MongoContainer.GetConnectionString(),
                             Database = "million",
                             RootUsername = "admin",
-                            RootPassword = "EmpanadasConAji123"
+                            RootPassword = Environment.GetEnvironmentVariable("MONGO_ROOT_PASSWORD") ?? "test_password_123"
                         };
                         var optionsWrapper = Options.Create(options);
                         return new MongoContext(optionsWrapper);

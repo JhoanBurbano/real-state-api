@@ -11,10 +11,10 @@
  */
 
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
-// MongoDB Atlas connection string
-const MONGODB_URI = "mongodb+srv://jsburbano:EmpanadasConAji123@pruebastecnicas.sm4lf1d.mongodb.net/?retryWrites=true&w=majority&appName=pruebastecnicas";
-const DATABASE_NAME = "million";
+// Use environment variable for MongoDB URI - NEVER hardcode credentials
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017";
 
 // PropertyStatus enum values (matching C# enum)
 const PropertyStatus = {
@@ -213,7 +213,7 @@ async function seedDatabase() {
     await client.connect();
     console.log('✅ Connected successfully');
     
-    const db = client.db(DATABASE_NAME);
+    const db = client.db('million');
     
     // Clear existing data
     console.log('🧹 Clearing existing data...');
