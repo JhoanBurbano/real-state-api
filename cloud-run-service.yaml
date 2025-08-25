@@ -16,30 +16,45 @@ spec:
       - image: jsburbano07/million-real-estate-api:latest
         ports:
         - containerPort: 80
-        resources:
-          limits:
-            cpu: "1"
-            memory: 1Gi
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
         - name: ASPNETCORE_URLS
           value: "http://+:80"
-        - name: MONGO_URI
-          value: "mongodb+srv://jsburbano:EmpanadasConAji123@pruebastecnicas.sm4lf1d.mongodb.net/?retryWrites=true&w=majority&appName=pruebastecnicas"
-        - name: MONGO_DB
+        - name: MONGO__URI
+          value: "mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority"
+        - name: MONGO__DATABASE
           value: "million"
-        - name: JWT_SECRET
-          value: "Jf7s9dk2L0qM!a$P@r#xGz8Kq%hN4u"
-        - name: JWT_ISSUER
-          value: "https://test-technicals-jsburbano-uc.run.app"
-        - name: JWT_AUDIENCE
-          value: "https://real-state.jsburbano.dev"
-        - name: RATE_LIMITING_MAX_REQUESTS
+        - name: JWT__SECRET
+          value: "your-jwt-secret-key-here"
+        - name: JWT__ISSUER
+          value: "million-api"
+        - name: JWT__AUDIENCE
+          value: "million-frontend"
+        - name: RATE_LIMITING__MAX_REQUESTS
           value: "100"
-        - name: RATE_LIMITING_WINDOW_MINUTES
+        - name: RATE_LIMITING__WINDOW_MINUTES
           value: "1"
-        - name: LOG_LEVEL_DEFAULT
+        - name: LOG_LEVEL__DEFAULT
           value: "Information"
-        - name: LOG_LEVEL_MICROSOFT_ASPNETCORE
-          value: "Information"
+        - name: LOG_LEVEL__MICROSOFT_ASPNETCORE
+          value: "Warning"
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      scaling:
+        minScale: 0
+        maxScale: 10

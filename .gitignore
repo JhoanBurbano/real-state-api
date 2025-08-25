@@ -275,3 +275,104 @@ __pycache__/
 # tools/
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore
+
+# =============================================================================
+# 🔒 SECURITY - CREDENTIALS & SENSITIVE FILES
+# =============================================================================
+
+# Environment files with real credentials
+.env
+.env.local
+.env.production
+.env.staging
+.env.development
+
+# Docker environment files
+dockerhub-gcp.env
+docker-compose.*.env
+
+# Azure environment files
+azure.env
+azure.env.local
+
+# Google Cloud environment files
+gcp.env
+gcp.env.local
+
+# MongoDB connection strings and credentials
+*.env.mongo
+*.env.atlas
+
+# JWT secrets and keys
+*.env.jwt
+*.env.auth
+
+# API keys and secrets
+*.env.api
+*.env.keys
+
+# Database credentials
+*.env.db
+*.env.database
+
+# Cloud provider credentials
+*.env.aws
+*.env.azure
+*.env.gcp
+*.env.cloud
+
+# =============================================================================
+# 🚨 CRITICAL SECURITY - NEVER COMMIT THESE
+# =============================================================================
+
+# Real MongoDB URIs with credentials
+**/mongodb+srv://*
+**/mongodb://*:*@*
+
+# Real JWT secrets
+**/JWT_SECRET=*
+**/JWT__SECRET=*
+
+# Real API keys
+**/API_KEY=*
+**/API_SECRET=*
+
+# Real passwords
+**/PASSWORD=*
+**/PASS=*
+**/PWD=*
+
+# Real access tokens
+**/ACCESS_TOKEN=*
+**/TOKEN=*
+
+# =============================================================================
+# 📁 TEMPORARY & CACHE FILES
+# =============================================================================
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Cache directories
+.cache/
+cache/
+tmp/
+
+# Log files
+*.log
+logs/
+
+# =============================================================================
+# 🐳 DOCKER & CONTAINERS
+# =============================================================================
+
+# Docker volumes
+docker-volumes/
+volumes/
+
+# Container data
+container-data/
