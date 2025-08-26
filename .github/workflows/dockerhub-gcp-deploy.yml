@@ -4,8 +4,6 @@ on:
   push:
     branches: [ main, develop ]
     tags: [ 'v*' ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       environment:
@@ -145,7 +143,7 @@ jobs:
       run: |
         echo "Waiting for service to be ready..."
         sleep 30
-        curl -f ${{ steps.deploy.outputs.url }}/health || exit 1
+        curl -f ${{ steps.deploy.outputs.url }}/health/ready || exit 1
         
   notify:
     name: Notify deployment status
