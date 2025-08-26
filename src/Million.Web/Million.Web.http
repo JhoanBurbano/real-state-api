@@ -1,0 +1,6 @@
+@Million.Web_HostAddress = http://localhost:5208
+
+GET {{Million.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

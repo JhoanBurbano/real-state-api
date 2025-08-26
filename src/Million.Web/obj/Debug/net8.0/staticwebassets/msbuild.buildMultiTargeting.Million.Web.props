@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/Million.Web.props" />
+</Project>

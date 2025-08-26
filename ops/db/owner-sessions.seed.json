@@ -1,0 +1,36 @@
+[
+  {
+    "id": "session-001",
+    "ownerId": "admin-001",
+    "refreshTokenHash": "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
+    "ip": "192.168.1.100",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "issuedAt": "2024-01-01T00:00:00Z",
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "revokedAt": null,
+    "rotatedAt": null
+  },
+  {
+    "id": "session-002",
+    "ownerId": "owner-001",
+    "refreshTokenHash": "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
+    "ip": "192.168.1.101",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "issuedAt": "2024-01-01T00:00:00Z",
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "revokedAt": null,
+    "rotatedAt": null
+  },
+  {
+    "id": "session-003",
+    "ownerId": "owner-002",
+    "refreshTokenHash": "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
+    "ip": "192.168.1.102",
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
+    "issuedAt": "2024-01-01T00:00:00Z",
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "revokedAt": null,
+    "rotatedAt": null
+  }
+]
+

@@ -1,0 +1,249 @@
+# Cursor Rules - Million Real Estate API
+
+## 🏗️ Architecture & Structure
+
+### Clean Architecture Principles
+- Follow Clean Architecture with clear separation of concerns
+- Domain layer should contain only business logic and entities
+- Application layer handles use cases and business rules
+- Infrastructure layer manages external concerns (database, external APIs)
+- Web layer handles HTTP concerns and presentation
+
+### Project Structure
+- Keep `src/` for source code and `tests/` for test projects
+- Use consistent naming: `Million.{Layer}` for project names
+- Maintain clear boundaries between layers
+- Keep DTOs in Application layer, entities in Domain layer
+
+## 🎯 .NET & C# Standards
+
+### Code Style
+- Use `var` for local variables when type is obvious
+- Prefer `async/await` over `.Result` or `.Wait()`
+- Use `CancellationToken` for async operations
+- Follow C# naming conventions (PascalCase for public members, camelCase for private)
+
+### Exception Handling
+- Use custom domain exceptions for business rule violations
+- Always catch specific exceptions, avoid generic `Exception`
+- Use `ProblemDetailsMiddleware` for consistent error responses
+- Log exceptions with structured logging
+
+### Validation
+- Use FluentValidation for request validation
+- Keep validation rules close to DTOs
+- Use custom validators for complex business rules
+- Validate early in the request pipeline
+
+## 🗄️ MongoDB & Data Access
+
+### Repository Pattern
+- Use `I{Entity}Repository` interfaces in Application layer
+- Implement repositories in Infrastructure layer
+- Use `IMongoCollection<T>` for data access
+- Implement proper error handling for database operations
+
+### Document Mapping
+- Keep `{Entity}Document` classes in Infrastructure layer
+- Use `FromEntity` and `ToEntity` methods for mapping
+- Handle `ObjectId` conversion properly
+- Use `BsonRegularExpression` for text search
+
+### Query Optimization
+- Use indexes for frequently queried fields
+- Implement pagination for large result sets
+- Use projection to limit returned fields
+- Implement proper sorting with `SortDefinitionBuilder`
+
+## 🌐 Web API & Middleware
+
+### Minimal API Endpoints
+- Use `MapGet`, `MapPost`, `MapPut`, `MapDelete`, `MapPatch`
+- Group related endpoints with `.WithTags()`
+- Use `[AsParameters]` for complex query objects
+- Return appropriate HTTP status codes
+
+### Middleware Pipeline
+- Order middleware correctly: CorrelationId → Logging → ProblemDetails → RateLimiting
+- Use custom middleware for cross-cutting concerns
+- Implement proper error handling in middleware
+- Use structured logging throughout
+
+### Rate Limiting
+- Configure rate limits via environment variables
+- Use `IMemoryCache` for rate limiting state
+- Set proper headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
+- Handle rate limit exceeded with proper Problem Details
+
+## 🧪 Testing Strategy
+
+### Test Organization
+- Use NUnit as testing framework
+- Use NSubstitute for mocking (not Moq)
+- Use FluentAssertions for assertions
+- Group tests by functionality
+
+### Test Naming
+- Use descriptive test names: `Should_do_something_when_condition`
+- Test both success and failure scenarios
+- Test edge cases and boundary conditions
+- Use `[SetUp]` and `[TearDown]` for common setup
+
+### Test Data
+- Use realistic test data
+- Clean up resources in `[TearDown]`
+- Mock external dependencies
+- Test with different data scenarios
+
+## 🔒 Security & Validation
+
+### Input Validation
+- Validate all user inputs with FluentValidation
+- Use custom validators for business rules
+- Sanitize URLs and file paths
+- Implement proper authorization checks
+
+### Error Handling
+- Never expose internal errors to clients
+- Use RFC 7807 Problem Details format
+- Include correlation IDs for tracing
+- Log security-related events
+
+## 📝 Documentation & Comments
+
+### Code Comments
+- Comment complex business logic
+- Explain non-obvious design decisions
+- Document public APIs
+- Keep comments up-to-date with code changes
+
+### API Documentation
+- Use Swagger/OpenAPI for API documentation
+- Document request/response schemas
+- Include example requests
+- Document error responses
+
+## 🚀 Performance & Scalability
+
+### Caching Strategy
+- Use `IMemoryCache` for rate limiting
+- Consider Redis for distributed scenarios
+- Implement proper cache invalidation
+- Monitor cache hit rates
+
+### Database Performance
+- Use proper indexes
+- Implement pagination
+- Use projection to limit data transfer
+- Monitor query performance
+
+### Async Operations
+- Use `async/await` consistently
+- Avoid blocking operations
+- Use `CancellationToken` for cancellation
+- Implement proper timeout handling
+
+## 🔧 Development Workflow
+
+### Code Quality
+- Run tests before committing
+- Use consistent formatting
+- Follow naming conventions
+- Keep methods focused and small
+
+### Error Handling
+- Use custom exceptions for domain errors
+- Implement proper logging
+- Handle edge cases gracefully
+- Provide meaningful error messages
+
+### Configuration
+- Use environment variables for configuration
+- Provide sensible defaults
+- Use strongly-typed configuration objects
+- Validate configuration at startup
+
+## 📊 Monitoring & Observability
+
+### Logging
+- Use structured logging with Serilog
+- Include correlation IDs in all logs
+- Log at appropriate levels (Information, Warning, Error)
+- Include context in log messages
+
+### Metrics
+- Monitor API response times
+- Track rate limiting events
+- Monitor database performance
+- Use health checks for monitoring
+
+## 🎨 Code Examples
+
+### Good Repository Implementation
+```csharp
+public class PropertyRepository : IPropertyRepository
+{
+    private readonly IMongoCollection<PropertyDocument> _collection;
+    
+    public async Task<Property?> GetByIdAsync(string id, CancellationToken ct = default)
+    {
+        var document = await _collection.Find(x => x.Id == id).FirstOrDefaultAsync(ct);
+        return document?.ToEntity();
+    }
+}
+```
+
+### Good Validation Rule
+```csharp
+public class CreatePropertyRequestValidator : AbstractValidator<CreatePropertyRequest>
+{
+    public CreatePropertyRequestValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .MaximumLength(200);
+            
+        RuleFor(x => x.Image)
+            .NotEmpty()
+            .Must(BeValidBlobUrl)
+            .WithMessage("Image must be a valid Vercel Blob URL");
+    }
+}
+```
+
+### Good Middleware Implementation
+```csharp
+public class CorrelationIdMiddleware
+{
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        var correlationId = GetOrCreateCorrelationId(context);
+        context.Request.Headers[HeaderName] = correlationId;
+        
+        await next(context);
+    }
+}
+```
+
+## 🚫 Anti-Patterns to Avoid
+
+- Don't use `async void` methods
+- Don't catch generic `Exception`
+- Don't use `.Result` on async methods
+- Don't hardcode configuration values
+- Don't expose internal implementation details
+- Don't ignore cancellation tokens
+- Don't use blocking operations in async methods
+
+## ✅ Best Practices Summary
+
+1. **Follow Clean Architecture** - Keep layers properly separated
+2. **Use Async/Await** - Implement proper async patterns
+3. **Validate Inputs** - Use FluentValidation for all user inputs
+4. **Handle Errors Gracefully** - Use custom exceptions and Problem Details
+5. **Log Everything** - Use structured logging with context
+6. **Test Thoroughly** - Cover success, failure, and edge cases
+7. **Monitor Performance** - Use health checks and metrics
+8. **Keep It Simple** - Avoid over-engineering solutions
+9. **Document APIs** - Use Swagger and clear comments
+10. **Follow Conventions** - Use consistent naming and structure

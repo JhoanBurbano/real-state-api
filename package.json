@@ -1,0 +1,20 @@
+{
+  "name": "million-real-estate-api-seed",
+  "version": "1.0.0",
+  "description": "Seed script for Million Real Estate API MongoDB database",
+  "main": "scripts/seed-mongodb.js",
+  "scripts": {
+    "seed": "node scripts/seed-mongodb.js"
+  },
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  },
+  "keywords": [
+    "mongodb",
+    "seed",
+    "real-estate",
+    "api"
+  ],
+  "author": "Joan Burbano",
+  "license": "MIT"
+}

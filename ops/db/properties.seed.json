@@ -1,0 +1,226 @@
+[
+  {
+    "id": "prop-001",
+    "ownerId": "owner-001",
+    "name": "Oceanfront Villa",
+    "address": "100 Ocean Dr, Miami Beach, FL",
+    "price": 12500000,
+    "codeInternal": "MB001",
+    "year": 2020,
+    "status": "Active",
+    "cover": {
+      "type": "Image",
+      "url": "https://blob.vercel-storage.com/properties/mb001/cover.jpg",
+      "index": 0
+    },
+    "media": [
+      {
+        "id": "media-001",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/mb001/1.jpg",
+        "index": 1,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-002",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/mb001/2.jpg",
+        "index": 2,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-003",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/mb001/3.jpg",
+        "index": 3,
+        "enabled": true,
+        "featured": true
+      }
+    ],
+    "description": "Luxurious oceanfront villa with panoramic views of the Atlantic Ocean",
+    "city": "Miami Beach",
+    "neighborhood": "South Beach",
+    "propertyType": "Villa",
+    "size": 8500,
+    "bedrooms": 5,
+    "bathrooms": 6,
+    "hasPool": true,
+    "hasGarden": true,
+    "hasParking": true,
+    "isFurnished": true,
+    "availableFrom": "2024-01-15T00:00:00Z",
+    "availableTo": "2024-12-31T00:00:00Z",
+    "traces": [
+      {
+        "id": "trace-001",
+        "dateSale": "2020-06-15T00:00:00Z",
+        "name": "Previous Sale",
+        "value": 11000000,
+        "tax": 750000
+      }
+    ],
+    "coverImage": "https://blob.vercel-storage.com/properties/mb001/cover.jpg",
+    "images": [
+      {
+        "url": "https://blob.vercel-storage.com/properties/mb001/1.jpg",
+        "index": 1,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/mb001/2.jpg",
+        "index": 2,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/mb001/3.jpg",
+        "index": 3,
+        "enabled": true
+      }
+    ],
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z",
+    "isActive": true
+  },
+  {
+    "id": "prop-002",
+    "ownerId": "owner-002",
+    "name": "Coral Gables Estate",
+    "address": "200 Coral Way, Coral Gables, FL",
+    "price": 6800000,
+    "codeInternal": "CG001",
+    "year": 2018,
+    "status": "Active",
+    "cover": {
+      "type": "Image",
+      "url": "https://blob.vercel-storage.com/properties/cg001/cover.jpg",
+      "index": 0
+    },
+    "media": [
+      {
+        "id": "media-004",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/cg001/1.jpg",
+        "index": 1,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-005",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/cg001/2.jpg",
+        "index": 2,
+        "enabled": true,
+        "featured": true
+      }
+    ],
+    "description": "Elegant estate in the prestigious Coral Gables area",
+    "city": "Coral Gables",
+    "neighborhood": "Old Cutler",
+    "propertyType": "Estate",
+    "size": 6200,
+    "bedrooms": 4,
+    "bathrooms": 5,
+    "hasPool": true,
+    "hasGarden": true,
+    "hasParking": true,
+    "isFurnished": false,
+    "availableFrom": "2024-02-01T00:00:00Z",
+    "availableTo": "2024-11-30T00:00:00Z",
+    "traces": [],
+    "coverImage": "https://blob.vercel-storage.com/properties/cg001/cover.jpg",
+    "images": [
+      {
+        "url": "https://blob.vercel-storage.com/properties/cg001/1.jpg",
+        "index": 1,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/cg001/2.jpg",
+        "index": 2,
+        "enabled": true
+      }
+    ],
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z",
+    "isActive": true
+  },
+  {
+    "id": "prop-003",
+    "ownerId": "owner-003",
+    "name": "Brickell Sky Penthouse",
+    "address": "300 Brickell Ave, Miami, FL",
+    "price": 9800000,
+    "codeInternal": "BK001",
+    "year": 2022,
+    "status": "Active",
+    "cover": {
+      "type": "Image",
+      "url": "https://blob.vercel-storage.com/properties/bk001/cover.jpg",
+      "index": 0
+    },
+    "media": [
+      {
+        "id": "media-006",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/bk001/1.jpg",
+        "index": 1,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-007",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/bk001/2.jpg",
+        "index": 2,
+        "enabled": true,
+        "featured": true
+      },
+      {
+        "id": "media-008",
+        "type": "Image",
+        "url": "https://blob.vercel-storage.com/properties/bk001/3.jpg",
+        "index": 3,
+        "enabled": true,
+        "featured": false
+      }
+    ],
+    "description": "Ultra-modern penthouse with stunning city and bay views",
+    "city": "Miami",
+    "neighborhood": "Brickell",
+    "propertyType": "Penthouse",
+    "size": 3800,
+    "bedrooms": 3,
+    "bathrooms": 4,
+    "hasPool": true,
+    "hasGarden": false,
+    "hasParking": true,
+    "isFurnished": true,
+    "availableFrom": "2024-01-20T00:00:00Z",
+    "availableTo": "2024-10-31T00:00:00Z",
+    "traces": [],
+    "coverImage": "https://blob.vercel-storage.com/properties/bk001/cover.jpg",
+    "images": [
+      {
+        "url": "https://blob.vercel-storage.com/properties/bk001/1.jpg",
+        "index": 1,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/bk001/2.jpg",
+        "index": 2,
+        "enabled": true
+      },
+      {
+        "url": "https://blob.vercel-storage.com/properties/bk001/3.jpg",
+        "index": 3,
+        "enabled": true
+      }
+    ],
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-01T00:00:00Z",
+    "isActive": true
+  }
+]
+

@@ -1,0 +1,484 @@
+{
+	"info": {
+		"_postman_id": "million-properties-api",
+		"name": "Million Properties API - Complete CRUD",
+		"description": "Complete CRUD operations for luxury real estate properties with Vercel Blob image support, advanced filtering, and search capabilities",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Checks",
+			"item": [
+				{
+					"name": "Health Live",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/health/live",
+							"host": ["{{api_url}}"],
+							"path": ["health", "live"]
+						}
+					}
+				},
+				{
+					"name": "Health Ready",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/health/ready",
+							"host": ["{{api_url}}"],
+							"path": ["health", "ready"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Properties - READ Operations",
+			"item": [
+				{
+					"name": "Get Properties - Basic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties?page=1&pageSize=10",
+							"host": ["{{api_url}}"],
+							"path": ["properties"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Properties - Advanced Filtering",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties?search=miami&city=miami&minPrice=1000000&maxPrice=5000000&bedrooms=3&hasPool=true&sort=-price&page=1&pageSize=20",
+							"host": ["{{api_url}}"],
+							"path": ["properties"],
+							"query": [
+								{
+									"key": "search",
+									"value": "miami",
+									"description": "Search in name, description, address, city, neighborhood"
+								},
+								{
+									"key": "city",
+									"value": "miami",
+									"description": "Filter by city"
+								},
+								{
+									"key": "minPrice",
+									"value": "1000000",
+									"description": "Minimum price"
+								},
+								{
+									"key": "maxPrice",
+									"value": "5000000",
+									"description": "Maximum price"
+								},
+								{
+									"key": "bedrooms",
+									"value": "3",
+									"description": "Number of bedrooms"
+								},
+								{
+									"key": "hasPool",
+									"value": "true",
+									"description": "Has swimming pool"
+								},
+								{
+									"key": "sort",
+									"value": "-price",
+									"description": "Sort by price descending"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Properties - Location & Type Filtering",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties?location=brickell&propertyType=villa&minSize=200&maxSize=500&sort=size",
+							"host": ["{{api_url}}"],
+							"path": ["properties"],
+							"query": [
+								{
+									"key": "location",
+									"value": "brickell",
+									"description": "Search in city or neighborhood"
+								},
+								{
+									"key": "propertyType",
+									"value": "villa",
+									"description": "Type of property"
+								},
+								{
+									"key": "minSize",
+									"value": "200",
+									"description": "Minimum size in square meters"
+								},
+								{
+									"key": "maxSize",
+									"value": "500",
+									"description": "Maximum size in square meters"
+								},
+								{
+									"key": "sort",
+									"value": "size",
+									"description": "Sort by size ascending"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Properties - Amenities Filtering",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties?hasGarden=true&hasParking=true&isFurnished=true&bathrooms=2&sort=-date",
+							"host": ["{{api_url}}"],
+							"path": ["properties"],
+							"query": [
+								{
+									"key": "hasGarden",
+									"value": "true",
+									"description": "Has garden"
+								},
+								{
+									"key": "hasParking",
+									"value": "true",
+									"description": "Has parking"
+								},
+								{
+									"key": "isFurnished",
+									"value": "true",
+									"description": "Is furnished"
+								},
+								{
+									"key": "bathrooms",
+									"value": "2",
+									"description": "Number of bathrooms"
+								},
+								{
+									"key": "sort",
+									"value": "-date",
+									"description": "Sort by creation date descending"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Properties - Availability Filtering",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties?availableFrom=2024-01-01&availableTo=2024-12-31&idOwner=owner123&sort=name",
+							"host": ["{{api_url}}"],
+							"path": ["properties"],
+							"query": [
+								{
+									"key": "availableFrom",
+									"value": "2024-01-01",
+									"description": "Available from date (ISO format)"
+								},
+								{
+									"key": "availableTo",
+									"value": "2024-12-31",
+									"description": "Available to date (ISO format)"
+								},
+								{
+									"key": "idOwner",
+									"value": "owner123",
+									"description": "Filter by owner ID"
+								},
+								{
+									"key": "sort",
+									"value": "name",
+									"description": "Sort by name ascending"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Property by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties/{{property_id}}",
+							"host": ["{{api_url}}"],
+							"path": ["properties", "{{property_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Properties - CREATE Operations",
+			"item": [
+				{
+					"name": "Create Property - Cover Only",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idOwner\": \"owner123\",\n  \"name\": \"Luxury Villa in Miami Beach\",\n  \"description\": \"Stunning luxury villa with ocean views, modern amenities, and private beach access.\",\n  \"addressProperty\": \"123 Ocean Drive, Miami Beach, FL 33139\",\n  \"city\": \"Miami Beach\",\n  \"neighborhood\": \"South Beach\",\n  \"propertyType\": \"Villa\",\n  \"priceProperty\": 2500000,\n  \"size\": 350,\n  \"bedrooms\": 4,\n  \"bathrooms\": 3,\n  \"hasPool\": true,\n  \"hasGarden\": true,\n  \"hasParking\": true,\n  \"isFurnished\": true,\n  \"availableFrom\": \"2024-01-01T00:00:00Z\",\n  \"availableTo\": \"2024-12-31T23:59:59Z\",\n  \"image\": \"https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/properties",
+							"host": ["{{api_url}}"],
+							"path": ["properties"]
+						}
+					}
+				},
+				{
+					"name": "Create Property - With Gallery",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idOwner\": \"owner456\",\n  \"name\": \"Modern Penthouse in Downtown\",\n  \"description\": \"Contemporary penthouse with city skyline views, rooftop terrace, and smart home features.\",\n  \"addressProperty\": \"456 Brickell Ave, Miami, FL 33131\",\n  \"city\": \"Miami\",\n  \"neighborhood\": \"Brickell\",\n  \"propertyType\": \"Penthouse\",\n  \"priceProperty\": 1800000,\n  \"size\": 280,\n  \"bedrooms\": 3,\n  \"bathrooms\": 2,\n  \"hasPool\": false,\n  \"hasGarden\": false,\n  \"hasParking\": true,\n  \"isFurnished\": true,\n  \"availableFrom\": \"2024-02-01T00:00:00Z\",\n  \"availableTo\": \"2024-11-30T23:59:59Z\",\n  \"image\": \"https://store1.public.blob.vercel-storage.com/properties/prop456/cover.jpg\",\n  \"images\": [\n    \"https://store1.public.blob.vercel-storage.com/properties/prop456/1.jpg\",\n    \"https://store1.public.blob.vercel-storage.com/properties/prop456/2.jpg\",\n    \"https://store1.public.blob.vercel-storage.com/properties/prop456/3.jpg\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/properties",
+							"host": ["{{api_url}}"],
+							"path": ["properties"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Properties - UPDATE Operations",
+			"item": [
+				{
+					"name": "Update Property - Partial Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Luxury Villa in Miami Beach\",\n  \"description\": \"Recently renovated luxury villa with enhanced ocean views and new modern amenities.\",\n  \"priceProperty\": 2750000,\n  \"hasPool\": true,\n  \"hasGarden\": true,\n  \"isFurnished\": true\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/properties/{{property_id}}",
+							"host": ["{{api_url}}"],
+							"path": ["properties", "{{property_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Update Property - Full Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idOwner\": \"owner123\",\n  \"name\": \"Completely Renovated Luxury Villa\",\n  \"description\": \"Fully renovated luxury villa with premium finishes, smart home technology, and panoramic ocean views.\",\n  \"addressProperty\": \"123 Ocean Drive, Miami Beach, FL 33139\",\n  \"city\": \"Miami Beach\",\n  \"neighborhood\": \"South Beach\",\n  \"propertyType\": \"Villa\",\n  \"priceProperty\": 3000000,\n  \"size\": 380,\n  \"bedrooms\": 5,\n  \"bathrooms\": 4,\n  \"hasPool\": true,\n  \"hasGarden\": true,\n  \"hasParking\": true,\n  \"isFurnished\": true,\n  \"availableFrom\": \"2024-03-01T00:00:00Z\",\n  \"availableTo\": \"2024-12-31T23:59:59Z\",\n  \"image\": \"https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg\",\n  \"images\": [\n    \"https://store1.public.blob.vercel-storage.com/properties/prop123/1.jpg\",\n    \"https://store1.public.blob.vercel-storage.com/properties/prop123/2.jpg\",\n    \"https://store1.public.blob.vercel-storage.com/properties/prop123/3.jpg\",\n    \"https://store1.public.blob.vercel-storage.com/properties/prop123/4.jpg\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/properties/{{property_id}}",
+							"host": ["{{api_url}}"],
+							"path": ["properties", "{{property_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Properties - DELETE Operations",
+			"item": [
+				{
+					"name": "Delete Property",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties/{{property_id}}",
+							"host": ["{{api_url}}"],
+							"path": ["properties", "{{property_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Properties - ACTIVATION Operations",
+			"item": [
+				{
+					"name": "Activate Property",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties/{{property_id}}/activate",
+							"host": ["{{api_url}}"],
+							"path": ["properties", "{{property_id}}", "activate"]
+						}
+					}
+				},
+				{
+					"name": "Deactivate Property",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/properties/{{property_id}}/deactivate",
+							"host": ["{{api_url}}"],
+							"path": ["properties", "{{property_id}}", "deactivate"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Vercel Blob - Image Upload",
+			"item": [
+				{
+					"name": "Upload Cover Image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"propertyId\": \"{{property_id}}\",\n  \"kind\": \"cover\"\n}"
+						},
+						"url": {
+							"raw": "{{web_url}}/api/blob/upload",
+							"host": ["{{web_url}}"],
+							"path": ["api", "blob", "upload"]
+						}
+					}
+				},
+				{
+					"name": "Upload Gallery Image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"propertyId\": \"{{property_id}}\",\n  \"kind\": \"gallery\",\n  \"index\": 1\n}"
+						},
+						"url": {
+							"raw": "{{web_url}}/api/blob/upload",
+							"host": ["{{web_url}}"],
+							"path": ["api", "blob", "upload"]
+						}
+					}
+				},
+				{
+					"name": "Get Blob Upload Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{web_url}}/api/blob/upload",
+							"host": ["{{web_url}}"],
+							"path": ["api", "blob", "upload"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Set correlation ID for tracking",
+					"pm.globals.set('correlation_id', pm.variables.replaceIn('{{$guid}}'));",
+					"",
+					"// Add correlation ID to headers if not present",
+					"if (!pm.request.headers.has('X-Correlation-ID')) {",
+					"    pm.request.headers.add({",
+					"        key: 'X-Correlation-ID',",
+					"        value: pm.globals.get('correlation_id')",
+					"        disabled: false",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "web_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "property_id",
+			"value": "68a6ad80c9d00d40aa74e39a",
+			"type": "string"
+		}
+	]
+}

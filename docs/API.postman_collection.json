@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "Million Properties API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List Properties",
+      "request": {
+        "method": "GET",
+        "header": [
+          {"key":"X-Correlation-Id","value":"demo-corr-id"}
+        ],
+        "url": {
+          "raw": "http://localhost:8080/properties?name=miami&minPrice=1000000&maxPrice=5000000&page=1&pageSize=12&sort=-price",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["properties"],
+          "query": [
+            {"key":"name","value":"miami"},
+            {"key":"minPrice","value":"1000000"},
+            {"key":"maxPrice","value":"5000000"},
+            {"key":"page","value":"1"},
+            {"key":"pageSize","value":"12"},
+            {"key":"sort","value":"-price"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Property by Id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {"key":"X-Correlation-Id","value":"demo-corr-id"}
+        ],
+        "url": {
+          "raw": "http://localhost:8080/properties/{{id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["properties", "{{id}}"]
+        }
+      }
+    },
+    {
+      "name": "Health Ready",
+      "request": {"method":"GET", "url":"http://localhost:8080/health/ready"}
+    }
+  ]
+}
+
