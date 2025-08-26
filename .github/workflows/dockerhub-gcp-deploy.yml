@@ -17,6 +17,16 @@ on:
         - staging
         - production
 
+# Recomendado para google-github-actions/auth (OIDC)
+permissions:
+  contents: read
+  id-token: write
+
+# (Opcional) Evita despliegues simultáneos por rama
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
 env:
   DOCKER_HUB_USERNAME: jsburbano07
   DOCKER_HUB_IMAGE_NAME: million-real-estate-api
@@ -48,11 +58,16 @@ jobs:
       with:
         images: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_IMAGE_NAME }}
         tags: |
+          # Ramas (main, develop, etc.)
           type=ref,event=branch
+          # Pull Requests (genera :pr-<num>)
           type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=sha,prefix={{branch}}-
+          # Semver cuando haces push de tags v*
+          type=semver,pattern={{version}},value=${{ github.ref_name }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ github.ref_name }}
+          # Tag por SHA con prefijo fijo (evita tag inválido)
+          type=sha,format=short,prefix=sha-
+          # latest solo en default branch
           type=raw,value=latest,enable={{is_default_branch}}
           
     - name: Build and push Docker image
@@ -77,6 +92,7 @@ jobs:
     if: github.event_name != 'pull_request'
     outputs:
       service_url: ${{ steps.deploy.outputs.url }}
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -101,6 +117,7 @@ jobs:
       with:
         service: ${{ env.CLOUD_RUN_SERVICE_NAME }}
         region: ${{ env.GCP_REGION }}
+        # Despliega la imagen publicada. Aquí puedes fijar a "latest" o a uno de los tags de steps.meta.outputs.tags.
         image: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_IMAGE_NAME }}:latest
         env_vars: |
           ASPNETCORE_ENVIRONMENT=Production
@@ -142,7 +159,7 @@ jobs:
       run: |
         echo "🎉 Deployment successful!"
         echo "Docker Hub: ${{ env.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_IMAGE_NAME }}"
-        echo "GCP Service: ${{ needs.deploy-to-gcp.outputs.url }}"
+        echo "GCP Service: ${{ needs.deploy-to-gcp.outputs.service_url }}"
         
     - name: Notify failure
       if: needs.build-and-push.result == 'failure' || needs.deploy-to-gcp.result == 'failure'
