@@ -20,6 +20,26 @@ using Serilog;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using DotNetEnv;
+
+// Load environment variables from .env file
+var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", ".env");
+Console.WriteLine($"Looking for .env file at: {envPath}");
+Console.WriteLine($"File exists: {File.Exists(envPath)}");
+
+if (File.Exists(envPath))
+{
+    Env.Load(envPath);
+    Console.WriteLine("✅ .env file loaded successfully");
+}
+else
+{
+    Console.WriteLine("❌ .env file not found");
+}
+
+// Debug: Log environment variables
+Console.WriteLine($"MONGO_URI: {Environment.GetEnvironmentVariable("MONGO_URI")}");
+Console.WriteLine($"MONGO_DB: {Environment.GetEnvironmentVariable("MONGO_DB")}");
 
 var builder = WebApplication.CreateBuilder(args);
 
