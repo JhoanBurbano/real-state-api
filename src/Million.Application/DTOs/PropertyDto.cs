@@ -26,6 +26,7 @@ public class PropertyDto
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public string CoverImage { get; set; } = string.Empty;
+    public string CoverUrl { get; set; } = string.Empty;
     public string[] Images { get; set; } = Array.Empty<string>();
     public bool IsActive { get; set; }
 }

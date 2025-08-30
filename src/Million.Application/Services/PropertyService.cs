@@ -160,7 +160,8 @@ public class PropertyService : IPropertyService
         AvailableTo = entity.AvailableTo,
         CreatedAt = entity.CreatedAt,
         UpdatedAt = entity.UpdatedAt,
-        CoverImage = entity.CoverImage,
+        CoverImage = !string.IsNullOrEmpty(entity.Cover.Url) ? entity.Cover.Url : entity.CoverImage,
+        CoverUrl = entity.Cover.Url,
         Images = entity.Images.Select(img => img.Url).ToArray(),
         IsActive = entity.IsActive
     };
