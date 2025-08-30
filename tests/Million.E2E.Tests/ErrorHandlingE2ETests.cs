@@ -27,8 +27,8 @@ public class ErrorHandlingE2ETests : TestBase
             Size = 2000,
             Bedrooms = 3,
             Bathrooms = 2,
-            CoverImage = "https://blob.vercel-storage.com/properties/test001/cover.jpg",
-            Images = new[] { "https://blob.vercel-storage.com/properties/test001/1.jpg" }
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/test001/cover.jpg",
+            Images = new[] { "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/test001/1.jpg" }
         };
 
         // Act
@@ -86,7 +86,7 @@ public class ErrorHandlingE2ETests : TestBase
         var tooManyImages = new List<string>();
         for (int i = 1; i <= 15; i++) // Exceeds FEATURED_MEDIA_LIMIT (12)
         {
-            tooManyImages.Add($"https://blob.vercel-storage.com/properties/test004/{i}.jpg");
+            tooManyImages.Add($"https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/test004/{i}.jpg");
         }
 
         var createRequest = new
@@ -104,7 +104,7 @@ public class ErrorHandlingE2ETests : TestBase
             Size = 2000,
             Bedrooms = 3,
             Bathrooms = 2,
-            CoverImage = "https://blob.vercel-storage.com/properties/test004/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/test004/cover.jpg",
             Images = tooManyImages
         };
 

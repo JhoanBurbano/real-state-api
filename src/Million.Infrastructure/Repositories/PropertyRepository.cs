@@ -110,6 +110,9 @@ public class PropertyRepository : IPropertyRepository
                 { "codeInternal", 1 },
                 { "ownerId", 1 },
                 { "status", 1 },
+                { "size", 1 },
+                { "bedrooms", 1 },
+                { "bathrooms", 1 },
                 { "coverUrl", new BsonDocument("$ifNull", new BsonArray { "$cover.Url", "$cover.Poster" }) },
                 { "totalImages", new BsonDocument("$size", new BsonDocument("$filter", new BsonDocument
                 {
@@ -157,7 +160,11 @@ public class PropertyRepository : IPropertyRepository
                 CoverUrl = item["coverUrl"].AsString,
                 HasMoreMedia = item["hasMoreMedia"].AsBoolean,
                 TotalImages = item["totalImages"].AsInt32,
-                TotalVideos = item["totalVideos"].AsInt32
+                TotalVideos = item["totalVideos"].AsInt32,
+                // Property details
+                Size = item["size"].BsonType == BsonType.Int32 ? item["size"].AsInt32 : item["size"].AsDecimal,
+                Bedrooms = item["bedrooms"].AsInt32,
+                Bathrooms = item["bathrooms"].AsInt32
             }).ToList() ?? new List<PropertyListDto>();
 
         var total = result.FirstOrDefault()?.GetValue("total").AsBsonArray.FirstOrDefault()?.AsBsonDocument.GetValue("count").AsInt32 ?? 0;

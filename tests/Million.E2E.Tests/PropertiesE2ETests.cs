@@ -211,11 +211,11 @@ public class PropertiesE2ETests : TestBase
             HasGarden = false,
             HasParking = true,
             IsFurnished = true,
-            CoverImage = "https://blob.vercel-storage.com/properties/test001/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/test001/cover.jpg",
             Images = new[]
             {
-                "https://blob.vercel-storage.com/properties/test001/1.jpg",
-                "https://blob.vercel-storage.com/properties/test001/2.jpg"
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/test001/1.jpg",
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/test001/2.jpg"
             }
         };
 

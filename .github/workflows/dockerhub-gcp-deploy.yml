@@ -130,6 +130,7 @@ jobs:
           RATE_LIMITING__WINDOW_MINUTES=${{ secrets.RATE_LIMITING_WINDOW_MINUTES }}
           LOG_LEVEL__DEFAULT=${{ secrets.LOG_LEVEL }}
           LOG_LEVEL__MICROSOFT_ASPNETCORE=${{ secrets.LOG_LEVEL_ASPNET }}
+          CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}
         memory: 1Gi
         cpu: 1
         max_instances: 10

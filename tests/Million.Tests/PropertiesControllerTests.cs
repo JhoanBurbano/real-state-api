@@ -31,7 +31,7 @@ public class PropertiesControllerTests
             Description = "Beautiful luxury villa with ocean view and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         var createdProperty = new PropertyDto
@@ -42,7 +42,7 @@ public class PropertiesControllerTests
             Description = "Beautiful luxury villa with ocean view and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = Array.Empty<string>()
         };
 
@@ -70,12 +70,12 @@ public class PropertiesControllerTests
             Description = "Beautiful luxury villa with gallery and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = new[]
             {
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/1.jpg",
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/2.jpg",
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/3.jpg"
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/1.jpg",
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/2.jpg",
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/3.jpg"
             }
         };
 
@@ -87,12 +87,12 @@ public class PropertiesControllerTests
             Description = "Beautiful luxury villa with gallery and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = new[]
             {
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/1.jpg",
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/2.jpg",
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/3.jpg"
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/1.jpg",
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/2.jpg",
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/3.jpg"
             }
         };
 
@@ -105,7 +105,7 @@ public class PropertiesControllerTests
         // Assert
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Images, Has.Length.EqualTo(3));
-        Assert.That(result.Images[0], Is.EqualTo("https://store1.public.blob.vercel-storage.com/properties/prop123/1.jpg"));
+        Assert.That(result.Images[0], Is.EqualTo("https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/1.jpg"));
     }
 
     [Test]
@@ -121,11 +121,11 @@ public class PropertiesControllerTests
             Description = "Beautiful luxury villa with ocean view and modern amenities",
             Address = "123 Ocean Drive, Miami Beach, FL",
             Price = 2500000,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = new[]
             {
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/1.jpg",
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/2.jpg"
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/1.jpg",
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/2.jpg"
             }
         };
 
@@ -178,7 +178,7 @@ public class PropertiesControllerTests
                 Name = "Villa 1",
                 Address = "Address 1",
                 Price = 2000000,
-                CoverUrl = "https://store1.public.blob.vercel-storage.com/properties/prop1/cover.jpg",
+                CoverUrl = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop1/prop-prop1_photo-01.jpg",
                 HasMoreMedia = false,
                 TotalImages = 0,
                 TotalVideos = 0
@@ -190,7 +190,7 @@ public class PropertiesControllerTests
                 Name = "Villa 2",
                 Address = "Address 2",
                 Price = 3000000,
-                CoverUrl = "https://store1.public.blob.vercel-storage.com/properties/prop2/cover.jpg",
+                CoverUrl = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop2/prop-prop2_photo-01.jpg",
                 HasMoreMedia = true,
                 TotalImages = 1,
                 TotalVideos = 0

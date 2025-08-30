@@ -361,7 +361,7 @@ public class PropertyValidationException : DomainValidationException
       "title": "Fix Property Data",
       "description": "Please correct the following validation errors before resubmitting",
       "steps": [
-        "Ensure the cover image URL follows the pattern: https://*.public.blob.vercel-storage.com/properties/{id}/cover.{ext}",
+        "Ensure the cover image URL follows the pattern: https://*.public.blob.vercel-storage.com/properties/{id}/prop-{id}_photo-01.jpg",
         "Set a positive price value for the property"
       ],
       "documentationUrl": "https://docs.million.com/properties/validation",

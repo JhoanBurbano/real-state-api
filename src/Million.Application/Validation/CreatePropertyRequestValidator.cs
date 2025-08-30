@@ -123,7 +123,7 @@ public class CreatePropertyRequestValidator : AbstractValidator<CreatePropertyRe
     private static bool BeCoverImage(string? url)
     {
         if (string.IsNullOrEmpty(url)) return false;
-        return url.Contains("/cover.");
+        return url.Contains("/cover.") || url.Contains("_photo-01.jpg");
     }
 
     private static bool BeGalleryImage(string? url)

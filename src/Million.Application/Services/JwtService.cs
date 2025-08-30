@@ -22,8 +22,7 @@ public class JwtService : IJwtService
     private readonly IConfiguration _configuration;
     private readonly string _issuer;
     private readonly string _audience;
-    private readonly string _privateKey;
-    private readonly string _publicKey;
+    private readonly string _secretKey;
     private readonly int _accessTokenTtlMinutes;
 
     public JwtService(IConfiguration configuration)
@@ -31,21 +30,14 @@ public class JwtService : IJwtService
         _configuration = configuration;
         _issuer = _configuration["AUTH_JWT_ISSUER"] ?? "million-api";
         _audience = _configuration["AUTH_JWT_AUDIENCE"] ?? "million-app";
-        _privateKey = _configuration["AUTH_JWT_PRIVATE_KEY"] ?? "";
-        _publicKey = _configuration["AUTH_JWT_PUBLIC_KEY"] ?? "";
+        _secretKey = _configuration["AUTH_JWT_SECRET_KEY"] ?? "your-256-bit-secret-key-for-development-only";
         _accessTokenTtlMinutes = int.TryParse(_configuration["AUTH_ACCESS_TTL_MIN"], out var ttl) ? ttl : 10;
     }
 
     public string GenerateAccessToken(Owner owner)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var privateKeyBytes = Convert.FromBase64String(_privateKey);
-
-        var rsa = RSA.Create();
-        rsa.ImportRSAPrivateKey(privateKeyBytes, out _);
-
-        var key = new RsaSecurityKey(rsa);
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256);
+        var key = Encoding.ASCII.GetBytes(_secretKey);
 
         var claims = new[]
         {
@@ -62,7 +54,7 @@ public class JwtService : IJwtService
             Expires = DateTime.UtcNow.AddMinutes(_accessTokenTtlMinutes),
             Issuer = _issuer,
             Audience = _audience,
-            SigningCredentials = credentials
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -89,17 +81,12 @@ public class JwtService : IJwtService
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var publicKeyBytes = Convert.FromBase64String(_publicKey);
-
-            var rsa = RSA.Create();
-            rsa.ImportRSAPublicKey(publicKeyBytes, out _);
-
-            var key = new RsaSecurityKey(rsa);
+            var key = Encoding.ASCII.GetBytes(_secretKey);
 
             var validationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = true,
                 ValidIssuer = _issuer,
                 ValidateAudience = true,

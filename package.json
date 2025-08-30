@@ -7,7 +7,8 @@
     "seed": "node scripts/seed-mongodb.js"
   },
   "dependencies": {
-    "mongodb": "^6.3.0"
+    "dotenv": "^17.2.1",
+    "mongodb": "^6.19.0"
   },
   "keywords": [
     "mongodb",

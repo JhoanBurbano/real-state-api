@@ -31,7 +31,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -59,7 +59,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -87,7 +87,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -115,12 +115,12 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = new[]
             {
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/1.jpg",
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/2.jpg",
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/3.jpg"
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/1.jpg",
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/2.jpg",
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/3.jpg"
             }
         };
 
@@ -149,9 +149,9 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = Enumerable.Range(1, 12)
-                .Select(i => $"https://store1.public.blob.vercel-storage.com/properties/prop123/{i}.jpg")
+                .Select(i => $"https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/{i}.jpg")
                 .ToArray()
         };
 
@@ -209,9 +209,9 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = Enumerable.Range(1, 13)
-                .Select(i => $"https://store1.public.blob.vercel-storage.com/properties/prop123/{i}.jpg")
+                .Select(i => $"https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/{i}.jpg")
                 .ToArray()
         };
 
@@ -295,7 +295,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/1.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/1.jpg"
         };
 
         // Act
@@ -322,11 +322,11 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = new[]
             {
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/0.jpg", // Invalid: starts at 0
-                "https://store1.public.blob.vercel-storage.com/properties/prop123/13.jpg" // Invalid: exceeds 12
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/0.jpg", // Invalid: starts at 0
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/13.jpg" // Invalid: exceeds 12
             }
         };
 
@@ -354,10 +354,10 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Images = new[]
             {
-                "https://store1.public.blob.vercel-storage.com/properties/prop456/1.jpg" // Different property ID
+                "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop456/1.jpg" // Different property ID
             }
         };
 
@@ -385,7 +385,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -412,7 +412,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -429,7 +429,7 @@ public class PropertyCreateValidatorTests
         var request = new CreatePropertyRequest
         {
             // Missing OwnerId, Name, Address, City, PropertyType, Price, CodeInternal
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -462,7 +462,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -489,7 +489,7 @@ public class PropertyCreateValidatorTests
             Size = -100, // Negative size
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -516,7 +516,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 21, // Exceeds maximum
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -543,7 +543,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 21, // Exceeds maximum
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg"
         };
 
         // Act
@@ -570,7 +570,7 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
             Description = "Beautiful luxury villa with ocean view",
             Neighborhood = "South Beach",
             HasPool = true,
@@ -608,7 +608,7 @@ public class PropertyCreateValidatorTests
             Cover = new Domain.Entities.Cover
             {
                 Type = Domain.Entities.MediaType.Image,
-                Url = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+                Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
                 Index = 0
             },
             Media = new List<Domain.Entities.Media>
@@ -617,7 +617,7 @@ public class PropertyCreateValidatorTests
                 {
                     Id = "media1",
                     Type = Domain.Entities.MediaType.Image,
-                    Url = "https://store1.public.blob.vercel-storage.com/properties/prop123/1.jpg",
+                    Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/1.jpg",
                     Index = 1,
                     Enabled = true,
                     Featured = true
@@ -626,7 +626,7 @@ public class PropertyCreateValidatorTests
                 {
                     Id = "media2",
                     Type = Domain.Entities.MediaType.Image,
-                    Url = "https://store1.public.blob.vercel-storage.com/properties/prop123/2.jpg",
+                    Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/2.jpg",
                     Index = 2,
                     Enabled = true,
                     Featured = false
@@ -658,11 +658,11 @@ public class PropertyCreateValidatorTests
             Size = 500,
             Bedrooms = 4,
             Bathrooms = 3,
-            CoverImage = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg", // Legacy
+            CoverImage = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg", // Legacy
             Cover = new Domain.Entities.Cover // New system
             {
                 Type = Domain.Entities.MediaType.Image,
-                Url = "https://store1.public.blob.vercel-storage.com/properties/prop456/cover.jpg", // Different property ID
+                Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop456/cover.jpg", // Different property ID
                 Index = 0
             }
         };
@@ -726,7 +726,7 @@ public class PropertyCreateValidatorTests
             Cover = new Domain.Entities.Cover
             {
                 Type = Domain.Entities.MediaType.Image,
-                Url = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+                Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
                 Index = 0
             },
             Media = new List<Domain.Entities.Media>
@@ -735,7 +735,7 @@ public class PropertyCreateValidatorTests
                 {
                     Id = "media1",
                     Type = Domain.Entities.MediaType.Image,
-                    Url = "https://store1.public.blob.vercel-storage.com/properties/prop456/1.jpg", // Different property ID
+                    Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop456/1.jpg", // Different property ID
                     Index = 1,
                     Enabled = true,
                     Featured = true
@@ -770,7 +770,7 @@ public class PropertyCreateValidatorTests
             Cover = new Domain.Entities.Cover
             {
                 Type = Domain.Entities.MediaType.Image,
-                Url = "https://store1.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
+                Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop123/cover.jpg",
                 Index = 0
             }
         };

@@ -33,7 +33,7 @@ const owners = [
     fullName: "Carlos Rodriguez",
     email: "carlos.rodriguez@million.com",
     phoneE164: "+13055551234",
-    photoUrl: "https://blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
     role: "Owner",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -45,7 +45,7 @@ const owners = [
     fullName: "Maria Gonzalez",
     email: "maria.gonzalez@million.com",
     phoneE164: "+13055555678",
-    photoUrl: "https://blob.vercel-storage.com/owners/maria-gonzalez.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/maria-gonzalez.jpg",
     role: "Owner",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -57,7 +57,7 @@ const owners = [
     fullName: "David Johnson",
     email: "david.johnson@million.com",
     phoneE164: "+13055559012",
-    photoUrl: "https://blob.vercel-storage.com/owners/david-johnson.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/david-johnson.jpg",
     role: "Owner",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -69,7 +69,7 @@ const owners = [
     fullName: "Ana Martinez",
     email: "ana.martinez@million.com",
     phoneE164: "+13055554567",
-    photoUrl: "https://blob.vercel-storage.com/owners/ana-martinez.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/ana-martinez.jpg",
     role: "Owner",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -81,7 +81,7 @@ const owners = [
     fullName: "Roberto Silva",
     email: "roberto.silva@million.com",
     phoneE164: "+13055557890",
-    photoUrl: "https://blob.vercel-storage.com/owners/roberto-silva.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/roberto-silva.jpg",
     role: "Owner",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -93,7 +93,7 @@ const owners = [
     fullName: "System Administrator",
     email: "admin@million.com",
     phoneE164: "+13055550000",
-    photoUrl: "https://blob.vercel-storage.com/owners/admin.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/admin.jpg",
     role: "Admin",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -136,7 +136,7 @@ for (let i = 1; i <= 50; i++) {
     media.push({
       id: `media-${i}-${j}`,
       type: "Image",
-      url: `https://blob.vercel-storage.com/properties/prop-${String(i).padStart(3, '0')}/${j}.jpg`,
+      url: `https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop-${String(i).padStart(3, '0')}/${j}.jpg`,
       index: j,
       enabled: true,
       featured: j <= 3
@@ -147,7 +147,7 @@ for (let i = 1; i <= 50; i++) {
   const images = [];
   for (let j = 1; j <= mediaCount; j++) {
     images.push({
-      url: `https://blob.vercel-storage.com/properties/prop-${String(i).padStart(3, '0')}/${j}.jpg`,
+      url: `https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop-${String(i).padStart(3, '0')}/${j}.jpg`,
       index: j,
       enabled: true
     });
@@ -188,7 +188,7 @@ for (let i = 1; i <= 50; i++) {
     status: "Active",
     cover: {
       type: "Image",
-      url: `https://blob.vercel-storage.com/properties/prop-${String(i).padStart(3, '0')}/cover.jpg`,
+      url: `https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop-${String(i).padStart(3, '0')}/prop-${String(i).padStart(3, '0')}_photo-01.jpg`,
       index: 0
     },
     media: media,
@@ -206,7 +206,7 @@ for (let i = 1; i <= 50; i++) {
     availableFrom: new Date(Date.now() + (Math.random() * 365 * 24 * 60 * 60 * 1000)),
     availableTo: new Date(Date.now() + (365 + Math.random() * 365) * 24 * 60 * 60 * 1000),
     traces: traces,
-    coverImage: `https://blob.vercel-storage.com/properties/prop-${String(i).padStart(3, '0')}/cover.jpg`,
+    coverImage: `https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop-${String(i).padStart(3, '0')}/prop-${String(i).padStart(3, '0')}_photo-01.jpg`,
     images: images,
     createdAt: new Date("2024-01-01T00:00:00Z"),
     updatedAt: new Date("2024-01-01T00:00:00Z"),

@@ -42,6 +42,7 @@ public class OwnerSession
     {
         return new OwnerSession
         {
+            Id = Guid.NewGuid().ToString(),
             OwnerId = ownerId,
             RefreshTokenHash = refreshTokenHash,
             Ip = ip,

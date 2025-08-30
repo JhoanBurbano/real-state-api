@@ -33,7 +33,7 @@ const owners = [
     fullName: "Carlos Rodriguez",
     email: "carlos.rodriguez@million.com",
     phoneE164: "+13055551234",
-    photoUrl: "https://blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
     role: "Owner",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -45,7 +45,7 @@ const owners = [
     fullName: "Maria Gonzalez",
     email: "maria.gonzalez@million.com",
     phoneE164: "+13055555678",
-    photoUrl: "https://blob.vercel-storage.com/owners/maria-gonzalez.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/maria-gonzalez.jpg",
     role: "Owner",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -57,7 +57,7 @@ const owners = [
     fullName: "David Johnson",
     email: "david.johnson@million.com",
     phoneE164: "+13055559012",
-    photoUrl: "https://blob.vercel-storage.com/owners/david-johnson.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/david-johnson.jpg",
     role: "Owner",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -69,7 +69,7 @@ const owners = [
     fullName: "System Administrator",
     email: "admin@million.com",
     phoneE164: "+13055550000",
-    photoUrl: "https://blob.vercel-storage.com/owners/admin.jpg",
+    photoUrl: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/admin.jpg",
     role: "Admin",
     isActive: true,
     passwordHash: "$argon2id$v=19$m=65536,t=3,p=1$dGVzdA$test",
@@ -99,14 +99,14 @@ const properties = [
     status: "Active",
     cover: {
       type: "Image",
-      url: "https://blob.vercel-storage.com/properties/mb001/cover.jpg",
+      url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/prop-mb001_photo-01.jpg",
       index: 0
     },
     media: [
       {
         id: "media-001",
         type: "Image",
-        url: "https://blob.vercel-storage.com/properties/mb001/1.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/1.jpg",
         index: 1,
         enabled: true,
         featured: true
@@ -114,7 +114,7 @@ const properties = [
       {
         id: "media-002",
         type: "Image",
-        url: "https://blob.vercel-storage.com/properties/mb001/2.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/2.jpg",
         index: 2,
         enabled: true,
         featured: true
@@ -122,7 +122,7 @@ const properties = [
       {
         id: "media-003",
         type: "Image",
-        url: "https://blob.vercel-storage.com/properties/mb001/3.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/3.jpg",
         index: 3,
         enabled: true,
         featured: true
@@ -150,20 +150,20 @@ const properties = [
         tax: 750000
       }
     ],
-    coverImage: "https://blob.vercel-storage.com/properties/mb001/cover.jpg",
+    coverImage: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/prop-mb001_photo-01.jpg",
     images: [
       {
-        url: "https://blob.vercel-storage.com/properties/mb001/1.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/1.jpg",
         index: 1,
         enabled: true
       },
       {
-        url: "https://blob.vercel-storage.com/properties/mb001/2.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/2.jpg",
         index: 2,
         enabled: true
       },
       {
-        url: "https://blob.vercel-storage.com/properties/mb001/3.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/3.jpg",
         index: 3,
         enabled: true
       }
@@ -183,14 +183,14 @@ const properties = [
     status: "Active",
     cover: {
       type: "Image",
-      url: "https://blob.vercel-storage.com/properties/cg001/cover.jpg",
+      url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/cg001/prop-cg001_photo-01.jpg",
       index: 0
     },
     media: [
       {
         id: "media-004",
         type: "Image",
-        url: "https://blob.vercel-storage.com/properties/cg001/1.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/cg001/1.jpg",
         index: 1,
         enabled: true,
         featured: true
@@ -198,7 +198,7 @@ const properties = [
       {
         id: "media-005",
         type: "Image",
-        url: "https://blob.vercel-storage.com/properties/cg001/2.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/cg001/2.jpg",
         index: 2,
         enabled: true,
         featured: true
@@ -218,15 +218,15 @@ const properties = [
     availableFrom: new Date("2024-02-01T00:00:00Z"),
     availableTo: new Date("2024-11-30T00:00:00Z"),
     traces: [],
-    coverImage: "https://blob.vercel-storage.com/properties/cg001/cover.jpg",
+    coverImage: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/cg001/prop-cg001_photo-01.jpg",
     images: [
       {
-        url: "https://blob.vercel-storage.com/properties/cg001/1.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/cg001/1.jpg",
         index: 1,
         enabled: true
       },
       {
-        url: "https://blob.vercel-storage.com/properties/cg001/2.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/cg001/2.jpg",
         index: 2,
         enabled: true
       }
@@ -246,14 +246,14 @@ const properties = [
     status: "Active",
     cover: {
       type: "Image",
-      url: "https://blob.vercel-storage.com/properties/bk001/cover.jpg",
+      url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/bk001/prop-bk001_photo-01.jpg",
       index: 0
     },
     media: [
       {
         id: "media-006",
         type: "Image",
-        url: "https://blob.vercel-storage.com/properties/bk001/1.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/bk001/1.jpg",
         index: 1,
         enabled: true,
         featured: true
@@ -261,7 +261,7 @@ const properties = [
       {
         id: "media-007",
         type: "Image",
-        url: "https://blob.vercel-storage.com/properties/bk001/2.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/bk001/2.jpg",
         index: 2,
         enabled: true,
         featured: true
@@ -269,7 +269,7 @@ const properties = [
       {
         id: "media-008",
         type: "Image",
-        url: "https://blob.vercel-storage.com/properties/bk001/3.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/bk001/3.jpg",
         index: 3,
         enabled: true,
         featured: false
@@ -289,20 +289,20 @@ const properties = [
     availableFrom: new Date("2024-01-20T00:00:00Z"),
     availableTo: new Date("2024-10-31T00:00:00Z"),
     traces: [],
-    coverImage: "https://blob.vercel-storage.com/properties/bk001/cover.jpg",
+    coverImage: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/bk001/prop-bk001_photo-01.jpg",
     images: [
       {
-        url: "https://blob.vercel-storage.com/properties/bk001/1.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/bk001/1.jpg",
         index: 1,
         enabled: true
       },
       {
-        url: "https://blob.vercel-storage.com/properties/bk001/2.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/bk001/2.jpg",
         index: 2,
         enabled: true
       },
       {
-        url: "https://blob.vercel-storage.com/properties/bk001/3.jpg",
+        url: "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/bk001/3.jpg",
         index: 3,
         enabled: true
       }

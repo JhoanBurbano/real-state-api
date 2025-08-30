@@ -85,14 +85,14 @@ public static class SeedData
                 CodeInternal = "MLB001",
                 Year = 2020,
                 Status = PropertyStatus.Active,
-                Cover = Cover.CreateImage("https://blob.vercel-storage.com/properties/mlb001/cover.jpg"),
+                Cover = Cover.CreateImage("https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mlb001/prop-mlb001_photo-01.jpg"),
                 Media = new List<Media>
                 {
-                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://blob.vercel-storage.com/properties/mlb001/1.jpg", Index = 1, Enabled = true, Featured = true },
-                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://blob.vercel-storage.com/properties/mlb001/2.jpg", Index = 2, Enabled = true, Featured = true },
-                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://blob.vercel-storage.com/properties/mlb001/3.jpg", Index = 3, Enabled = true, Featured = true },
-                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://blob.vercel-storage.com/properties/mlb001/4.jpg", Index = 4, Enabled = true, Featured = false },
-                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://blob.vercel-storage.com/properties/mlb001/5.jpg", Index = 5, Enabled = true, Featured = false }
+                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mlb001/1.jpg", Index = 1, Enabled = true, Featured = true },
+                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mlb001/2.jpg", Index = 2, Enabled = true, Featured = true },
+                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mlb001/3.jpg", Index = 3, Enabled = true, Featured = true },
+                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mlb001/4.jpg", Index = 4, Enabled = true, Featured = false },
+                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mlb001/5.jpg", Index = 5, Enabled = true, Featured = false }
                 },
                 Description = "Stunning luxury villa with panoramic ocean views",
                 City = "Malibu",
@@ -132,12 +132,12 @@ public static class SeedData
                 CodeInternal = "LAX001",
                 Year = 2022,
                 Status = PropertyStatus.Active,
-                Cover = Cover.CreateImage("https://blob.vercel-storage.com/properties/lax001/cover.jpg"),
+                Cover = Cover.CreateImage("https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/lax001/prop-lax001_photo-01.jpg"),
                 Media = new List<Media>
                 {
-                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://blob.vercel-storage.com/properties/lax001/1.jpg", Index = 1, Enabled = true, Featured = true },
-                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://blob.vercel-storage.com/properties/lax001/2.jpg", Index = 2, Enabled = true, Featured = true },
-                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://blob.vercel-storage.com/properties/lax001/3.jpg", Index = 3, Enabled = true, Featured = false }
+                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/lax001/1.jpg", Index = 1, Enabled = true, Featured = true },
+                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/lax001/2.jpg", Index = 2, Enabled = true, Featured = true },
+                    new Media { Id = Guid.NewGuid().ToString(), Type = MediaType.Image, Url = "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/lax001/3.jpg", Index = 3, Enabled = true, Featured = false }
                 },
                 Description = "Contemporary penthouse in the heart of downtown",
                 City = "Los Angeles",

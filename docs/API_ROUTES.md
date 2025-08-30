@@ -88,6 +88,17 @@ https://million-real-estate-api-sh25jnp3aa-uc.a.run.app
 
 ## 👥 **Owners Endpoints**
 
+### **GET** `/owners`
+- **Description**: Get a public list of all owners with public-facing information
+- **Authentication**: Public endpoint (no authentication required)
+- **Response**: `List<OwnerPublicDto>`
+- **Status Codes**: 200
+- **Features**: 
+  - Returns public owner information for team display
+  - Includes name, role, bio, and image
+  - No sensitive information exposed
+- **Response Fields**: `id`, `name`, `role`, `bio`, `image`
+
 ### **GET** `/owners/profile`
 - **Description**: Get current owner profile
 - **Headers**: `Authorization: Bearer {JWT}`
@@ -342,14 +353,14 @@ Access-Control-Allow-Headers: Content-Type, Authorization
 ```json
 {
   "cover": {
-    "url": "https://blob.vercel-storage.com/properties/prop-001/cover.jpg",
+    "url": "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop-001/cover.jpg",
     "type": "image",
     "index": 0
   },
   "gallery": [
     {
       "id": "media-001",
-      "url": "https://blob.vercel-storage.com/properties/prop-001/gallery-1.jpg",
+      "url": "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/prop-001/gallery-1.jpg",
       "type": "image",
       "index": 1,
       "enabled": true,

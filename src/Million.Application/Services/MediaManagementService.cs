@@ -340,7 +340,7 @@ public class MediaManagementService : IMediaManagementService
     public async Task<bool> ValidateMediaUrlsAsync(List<string> urls, CancellationToken ct = default)
     {
         // Basic validation - check if URLs are valid and from allowed domains
-        var allowedDomains = new[] { "blob.vercel-storage.com", "store1.public.blob.vercel-storage.com" };
+        var allowedDomains = new[] { "0daikfjw6ec1yprw.public.blob.vercel-storage.com" };
 
         foreach (var url in urls)
         {

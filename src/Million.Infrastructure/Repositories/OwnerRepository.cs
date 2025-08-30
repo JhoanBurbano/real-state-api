@@ -26,6 +26,27 @@ public class OwnerRepository : IOwnerRepository
         return document?.ToEntity();
     }
 
+    public async Task<Owner?> GetBySlugAsync(string slug, CancellationToken ct = default)
+    {
+        // Get all owners and filter by slug in memory (MongoDB doesn't support complex string operations)
+        var allOwners = await _collection.Find(_ => true).ToListAsync(ct);
+
+        var owner = allOwners.FirstOrDefault(o =>
+        {
+            var normalizedName = o.FullName.ToLower().Replace(" ", "-");
+            var normalizedSlug = slug.ToLower();
+            return normalizedName == normalizedSlug;
+        });
+
+        return owner?.ToEntity();
+    }
+
+    public async Task<List<Owner>> GetAllAsync(CancellationToken ct = default)
+    {
+        var documents = await _collection.Find(_ => true).ToListAsync(ct);
+        return documents.Select(d => d.ToEntity()).ToList();
+    }
+
     public async Task<List<Owner>> FindAsync(string? query = null, int page = 1, int pageSize = 20, CancellationToken ct = default)
     {
         var filter = Builders<OwnerDocument>.Filter.Empty;

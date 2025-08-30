@@ -27,4 +27,11 @@ public class PropertyListDto
     public int TotalImages { get; set; }
 
     public int TotalVideos { get; set; }
+
+    // Property details
+    public decimal Size { get; set; }
+
+    public int Bedrooms { get; set; }
+
+    public int Bathrooms { get; set; }
 }

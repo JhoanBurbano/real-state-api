@@ -91,14 +91,14 @@ curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   "status": "Active",
   "cover": {
     "type": "Image",
-    "url": "https://blob.vercel-storage.com/properties/mb001/cover.jpg",
+    "url": "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/cover.jpg",
     "index": 0
   },
   "media": [
     {
       "id": "media-001",
       "type": "Image",
-      "url": "https://blob.vercel-storage.com/properties/mb001/1.jpg",
+      "url": "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/1.jpg",
       "index": 1,
       "enabled": true,
       "featured": true
@@ -129,7 +129,7 @@ curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   "fullName": "Carlos Rodriguez",
   "email": "carlos.rodriguez@million.com",
   "phoneE164": "+13055551234",
-  "photoUrl": "https://blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
+  "photoUrl": "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
   "role": "Owner",
   "isActive": true,
   "createdAt": "2024-01-01T00:00:00Z",
@@ -142,7 +142,7 @@ curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
 {
   "id": "media-001",
   "type": "Image",
-  "url": "https://blob.vercel-storage.com/properties/mb001/1.jpg",
+  "url": "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/properties/mb001/1.jpg",
   "index": 1,
   "enabled": true,
   "featured": true
@@ -291,7 +291,7 @@ Authorization: Bearer {JWT}
   "fullName": "Carlos Rodriguez",
   "email": "carlos.rodriguez@million.com",
   "phoneE164": "+13055551234",
-  "photoUrl": "https://blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
+  "photoUrl": "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/carlos-rodriguez.jpg",
   "role": "Owner",
   "isActive": true,
   "createdAt": "2024-01-01T00:00:00Z",
@@ -327,7 +327,7 @@ Content-Type: application/json
 {
   "fullName": "New Name",
   "phoneE164": "+13055559999",
-  "photoUrl": "https://blob.vercel-storage.com/owners/new-photo.jpg"
+  "photoUrl": "https://0daikfjw6ec1yprw.public.blob.vercel-storage.com/owners/new-photo.jpg"
 }
 ```
 

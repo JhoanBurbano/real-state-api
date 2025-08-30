@@ -578,7 +578,7 @@ PATCH /properties/68a6ad80c9d00d40aa74e39a/deactivate
   "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
   "title": "Validation Failed",
   "status": 400,
-  "detail": "Cover image must be a valid Vercel Blob URL; Cover image path must end with '/cover.{ext}'",
+  "detail": "Cover image must be a valid Vercel Blob URL; Cover image path must follow pattern '/prop-{id}_photo-01.jpg'",
   "correlationId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```

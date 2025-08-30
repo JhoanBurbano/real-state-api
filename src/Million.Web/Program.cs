@@ -40,6 +40,7 @@ else
 // Debug: Log environment variables
 Console.WriteLine($"MONGO_URI: {Environment.GetEnvironmentVariable("MONGO_URI")}");
 Console.WriteLine($"MONGO_DB: {Environment.GetEnvironmentVariable("MONGO_DB")}");
+Console.WriteLine($"CORS_ORIGINS: {Environment.GetEnvironmentVariable("CORS_ORIGINS") ?? "NOT_SET"}");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,6 +75,9 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod();
     });
 });
+
+// Debug: Log CORS configuration
+Console.WriteLine($"🔒 CORS Policy 'Allowlist' configured with origins: [{string.Join(", ", corsOrigins)}]");
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<SimpleRateLimiter>(); // Keep for backward compatibility
@@ -110,6 +114,7 @@ builder.Services.AddScoped<IMediaManagementService, MediaManagementService>();
 builder.Services.AddScoped<IAdvancedSearchService, AdvancedSearchService>();
 builder.Services.AddScoped<IPropertyStatsService, PropertyStatsService>();
 builder.Services.AddScoped<IWebhookService, WebhookService>();
+builder.Services.AddScoped<IOwnerProfileService, OwnerProfileService>();
 
 var app = builder.Build();
 
@@ -297,6 +302,8 @@ app.MapGet("/test/repository-pipeline", async (MongoContext mongoContext) =>
         return Results.Problem($"Repository pipeline test failed: {ex.Message}");
     }
 });
+
+
 
 // Test simple filter
 app.MapGet("/test/simple-filter", async (MongoContext mongoContext) =>
@@ -518,7 +525,6 @@ app.MapPost("/auth/owner/login", async (
     if (!result.IsValid)
     {
         var detail = string.Join("; ", result.Errors.Select(e => e.ErrorMessage));
-        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status400BadRequest, "Validation Failed", detail);
         return Results.ValidationProblem(result.ToDictionary());
     }
 
@@ -531,13 +537,19 @@ app.MapPost("/auth/owner/login", async (
     }
     catch (InvalidCredentialsException)
     {
-        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Invalid Credentials", "Email or password is incorrect");
-        return Results.Unauthorized();
+        return Results.Problem(
+            title: "Invalid Credentials",
+            detail: "Email or password is incorrect",
+            statusCode: StatusCodes.Status401Unauthorized
+        );
     }
     catch (AccountLockedException ex)
     {
-        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status429TooManyRequests, "Account Locked", ex.Message);
-        return Results.StatusCode(StatusCodes.Status429TooManyRequests);
+        return Results.Problem(
+            title: "Account Locked",
+            detail: ex.Message,
+            statusCode: StatusCodes.Status429TooManyRequests
+        );
     }
 }).WithTags("Authentication");
 
@@ -552,7 +564,6 @@ app.MapPost("/auth/owner/refresh", async (
     if (!result.IsValid)
     {
         var detail = string.Join("; ", result.Errors.Select(e => e.ErrorMessage));
-        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status400BadRequest, "Validation Failed", detail);
         return Results.ValidationProblem(result.ToDictionary());
     }
 
@@ -563,8 +574,11 @@ app.MapPost("/auth/owner/refresh", async (
     }
     catch (InvalidTokenException)
     {
-        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Invalid Refresh Token", "The refresh token is invalid or expired");
-        return Results.Unauthorized();
+        return Results.Problem(
+            title: "Invalid Refresh Token",
+            detail: "The refresh token is invalid or expired",
+            statusCode: StatusCodes.Status401Unauthorized
+        );
     }
 }).WithTags("Authentication");
 
@@ -579,7 +593,6 @@ app.MapPost("/auth/owner/logout", async (
     if (!result.IsValid)
     {
         var detail = string.Join("; ", result.Errors.Select(e => e.ErrorMessage));
-        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status400BadRequest, "Validation Failed", detail);
         return Results.ValidationProblem(result.ToDictionary());
     }
 
@@ -590,8 +603,11 @@ app.MapPost("/auth/owner/logout", async (
     }
     catch (InvalidTokenException)
     {
-        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Invalid Refresh Token", "The refresh token is invalid or expired");
-        return Results.Unauthorized();
+        return Results.Problem(
+            title: "Invalid Refresh Token",
+            detail: "The refresh token is invalid or expired",
+            statusCode: StatusCodes.Status401Unauthorized
+        );
     }
 }).WithTags("Authentication");
 
@@ -904,6 +920,82 @@ app.MapGet("/metrics", async (
     }
 }).WithTags("Monitoring");
 
+// Public owners endpoint (no authentication required)
+app.MapGet("/owners", async (
+    IOwnerRepository ownerRepository,
+    CancellationToken ct) =>
+{
+    try
+    {
+        var owners = await ownerRepository.FindAsync(null, 1, 1000, ct);
+
+        var publicOwners = owners.Select(o => new OwnerProfessionalDto
+        {
+            Id = o.Id,
+            FullName = o.FullName,
+            Email = o.Email,
+            PhoneE164 = o.PhoneE164,
+            PhotoUrl = o.PhotoUrl,
+            Role = GetRoleDisplayName(o.Role),
+            IsActive = o.IsActive,
+            Title = o.Title,
+            Bio = o.Bio ?? o.Description,
+            Experience = o.ExperienceYears,
+            PropertiesSold = o.PropertiesSold,
+            Rating = o.Rating,
+            Specialties = o.Specialties,
+            Languages = o.Languages,
+            Certifications = o.Certifications,
+            Location = o.Location,
+            Address = o.Address,
+            Timezone = o.Timezone,
+            Company = o.Company ?? "MILLION Luxury Real Estate",
+            Department = o.Department,
+            EmployeeId = o.EmployeeId,
+            IsAvailable = o.IsAvailable,
+            Schedule = o.Schedule,
+            ResponseTime = o.ResponseTime,
+            TotalSalesValue = o.TotalSalesValue,
+            AveragePrice = o.AveragePrice,
+            ClientSatisfaction = o.ClientSatisfaction,
+            LinkedInUrl = o.LinkedInUrl,
+            InstagramUrl = o.InstagramUrl,
+            FacebookUrl = o.FacebookUrl,
+            CreatedAt = o.CreatedAt,
+            UpdatedAt = o.UpdatedAt,
+            LastActive = o.LastActive
+        }).ToList();
+
+        return Results.Ok(publicOwners);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Failed to retrieve owners: {ex.Message}");
+    }
+}).WithTags("Owners");
+
+// Owner profile by slug endpoint (no authentication required)
+app.MapGet("/owners/profiles/{slug}", async (
+    string slug,
+    IOwnerProfileService ownerProfileService,
+    CancellationToken ct) =>
+{
+    try
+    {
+        var profile = await ownerProfileService.GetProfileBySlugAsync(slug, ct);
+        if (profile == null)
+        {
+            return Results.NotFound(new { message = "Owner profile not found" });
+        }
+
+        return Results.Ok(profile);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Failed to retrieve owner profile: {ex.Message}");
+    }
+}).WithTags("Owners");
+
 // Owner profile endpoint (requires authentication)
 app.MapGet("/owners/profile", [RequiresAuth] async (
     IAuthService authService,
@@ -990,10 +1082,32 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+
+
+
+
 // Disable DeveloperExceptionPage completely to avoid middleware conflicts in testing
 // app.UseDeveloperExceptionPage();
 
 app.Run();
 
 // Public class for testing
-public partial class Program { }
+public partial class Program
+{
+    // Helper method to convert OwnerRole enum to display names
+    private static string GetRoleDisplayName(OwnerRole role) => role switch
+    {
+        OwnerRole.Owner => "Owner",
+        OwnerRole.Admin => "Admin",
+        OwnerRole.CEO => "CEO & Founder",
+        OwnerRole.HeadOfSales => "Head of Sales",
+        OwnerRole.LeadDesigner => "Lead Designer",
+        OwnerRole.InvestmentAdvisor => "Investment Advisor",
+        OwnerRole.SeniorAgent => "Senior Agent",
+        OwnerRole.PropertyManager => "Property Manager",
+        OwnerRole.CommercialSpecialist => "Commercial Specialist",
+        _ => role.ToString()
+    };
+}
