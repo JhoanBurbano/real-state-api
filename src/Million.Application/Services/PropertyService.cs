@@ -27,6 +27,28 @@ public class PropertyService : IPropertyService
         };
     }
 
+    public async Task<PagedResult<PropertyListDto>> GetPropertiesByOwnerAsync(string ownerId, PropertyListQuery? query, CancellationToken cancellationToken)
+    {
+        // Create default query if none provided
+        var defaultQuery = query ?? new PropertyListQuery
+        {
+            Page = 1,
+            PageSize = 20
+        };
+
+        // Get properties by owner ID
+        var properties = await _repository.GetByOwnerIdAsync(ownerId, defaultQuery, cancellationToken);
+        var totalCount = await _repository.GetCountByOwnerIdAsync(ownerId, cancellationToken);
+
+        return new PagedResult<PropertyListDto>
+        {
+            Items = properties,
+            Total = totalCount,
+            Page = defaultQuery.Page,
+            PageSize = defaultQuery.PageSize
+        };
+    }
+
     public async Task<PropertyDto?> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
         var entity = await _repository.GetByIdAsync(id, cancellationToken);

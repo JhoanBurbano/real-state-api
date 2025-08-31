@@ -611,6 +611,98 @@ app.MapPost("/auth/owner/logout", async (
     }
 }).WithTags("Authentication");
 
+// Owner profile endpoints (authentication required)
+app.MapGet("/auth/owner/profile", [RequiresAuth] async (
+    IAuthService authService,
+    HttpContext http,
+    CancellationToken ct) =>
+{
+    try
+    {
+        // Get owner ID from JWT token (already validated by middleware)
+        var ownerId = http.User.FindFirst("ownerId")?.Value;
+        if (string.IsNullOrEmpty(ownerId))
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Unauthorized", "Owner ID not found in token");
+            return Results.Unauthorized();
+        }
+
+        var owner = await authService.GetOwnerByIdAsync(ownerId, ct);
+        if (owner == null)
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status404NotFound, "Owner Not Found", "Owner not found");
+            return Results.NotFound();
+        }
+
+        // Return owner profile without sensitive information
+        return Results.Ok(new
+        {
+            id = owner.Id,
+            fullName = owner.FullName,
+            email = owner.Email,
+            phone = owner.PhoneE164,
+            photoUrl = owner.PhotoUrl,
+            bio = owner.Bio,
+            company = owner.Company,
+            socialMedia = new
+            {
+                linkedin = owner.LinkedInUrl,
+                instagram = owner.InstagramUrl,
+                facebook = owner.FacebookUrl
+            },
+            createdAt = owner.CreatedAt,
+            updatedAt = owner.UpdatedAt
+        });
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", "Failed to retrieve owner profile");
+        return Results.Problem("Failed to retrieve owner profile");
+    }
+}).WithTags("Authentication");
+
+app.MapPut("/auth/owner/profile", [RequiresAuth] async (
+    UpdateOwnerProfileRequest request,
+    IValidator<UpdateOwnerProfileRequest> validator,
+    IAuthService authService,
+    HttpContext http,
+    CancellationToken ct) =>
+{
+    var result = await validator.ValidateAsync(request, ct);
+    if (!result.IsValid)
+    {
+        var detail = string.Join("; ", result.Errors.Select(e => e.ErrorMessage));
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status400BadRequest, "Validation Failed", detail);
+        return Results.ValidationProblem(result.ToDictionary());
+    }
+
+    try
+    {
+        // Get owner ID from JWT token
+        var ownerId = http.User.FindFirst("ownerId")?.Value;
+        if (string.IsNullOrEmpty(ownerId))
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Unauthorized", "Owner ID not found in token");
+            return Results.Unauthorized();
+        }
+
+        var updatedOwner = await authService.UpdateOwnerProfileAsync(ownerId, request, ct);
+        return Results.Ok(updatedOwner);
+    }
+    catch (OwnerNotFoundException)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status404NotFound, "Resource Not Found", "Owner not found");
+        return Results.NotFound();
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", "Failed to update owner profile");
+        return Results.Problem("Failed to update owner profile");
+    }
+}).WithTags("Authentication");
+
+
+
 // Apply JWT authentication middleware to protected endpoints (skip in testing if configured)
 var skipJwtAuth = app.Configuration.GetValue<bool>("SkipJwtAuthMiddleware", false);
 
@@ -623,6 +715,77 @@ else
 {
     Console.WriteLine("🚫 Skipping JwtAuthMiddleware (configured to skip)");
 }
+
+// Dashboard endpoints (authentication required) - Must be after JWT middleware
+app.MapGet("/auth/owner/properties", [RequiresAuth] async (
+    [AsParameters] PropertyListQuery query,
+    IPropertyService propertyService,
+    IAuthService authService,
+    HttpContext http,
+    CancellationToken ct) =>
+{
+    try
+    {
+        // Get owner ID from JWT token
+        var ownerId = http.User.FindFirst("ownerId")?.Value;
+        if (string.IsNullOrEmpty(ownerId))
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Unauthorized", "Owner ID not found in token");
+            return Results.Unauthorized();
+        }
+
+        // Filter properties by owner ID
+        var ownerProperties = await propertyService.GetPropertiesByOwnerAsync(ownerId, query, ct);
+        return Results.Ok(ownerProperties);
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", "Failed to retrieve owner properties");
+        return Results.Problem("Failed to retrieve owner properties");
+    }
+}).WithTags("Authentication");
+
+app.MapGet("/auth/owner/properties/stats", [RequiresAuth] async (
+    IPropertyService propertyService,
+    IAuthService authService,
+    HttpContext http,
+    CancellationToken ct) =>
+{
+    try
+    {
+        // Get owner ID from JWT token
+        var ownerId = http.User.FindFirst("ownerId")?.Value;
+        if (string.IsNullOrEmpty(ownerId))
+        {
+            await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status401Unauthorized, "Unauthorized", "Owner ID not found in token");
+            return Results.Unauthorized();
+        }
+
+        // Get owner properties for stats
+        var properties = await propertyService.GetPropertiesByOwnerAsync(ownerId, null, ct);
+
+        var stats = new
+        {
+            totalProperties = properties.Total,
+            activeProperties = properties.Items.Count(p => p.Status == "Active"),
+            soldProperties = properties.Items.Count(p => p.Status == "Sold"),
+            offMarketProperties = properties.Items.Count(p => p.Status == "OffMarket"),
+            totalValue = properties.Items.Sum(p => p.Price),
+            averagePrice = properties.Items.Any() ? properties.Items.Average(p => p.Price) : 0,
+            propertiesByType = properties.Items.GroupBy(p => p.Status)
+                .ToDictionary(g => g.Key, g => g.Count()),
+            propertiesByCity = properties.Items.GroupBy(p => p.Address.Split(',').LastOrDefault()?.Trim() ?? "Unknown")
+                .ToDictionary(g => g.Key, g => g.Count())
+        };
+
+        return Results.Ok(stats);
+    }
+    catch (Exception ex)
+    {
+        await ProblemDetailsMiddleware.WriteProblemDetails(http, StatusCodes.Status500InternalServerError, "Internal Server Error", "Failed to retrieve owner statistics");
+        return Results.Problem("Failed to retrieve owner statistics");
+    }
+}).WithTags("Authentication");
 
 // Protected endpoints (authentication required)
 app.MapPost("/properties", [RequiresAuth] async (

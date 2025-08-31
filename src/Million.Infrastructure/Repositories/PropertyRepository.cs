@@ -323,6 +323,65 @@ public class PropertyRepository : IPropertyRepository
         return result.ModifiedCount > 0;
     }
 
+    public async Task<IReadOnlyList<PropertyListDto>> GetByOwnerIdAsync(string ownerId, PropertyListQuery query, CancellationToken cancellationToken)
+    {
+        var filter = Builders<PropertyDocument>.Filter.Eq(x => x.OwnerId, ownerId);
+
+        // Apply additional filters if provided
+        if (!string.IsNullOrWhiteSpace(query.Search))
+        {
+            var searchFilter = Builders<PropertyDocument>.Filter.Or(
+                Builders<PropertyDocument>.Filter.Regex(x => x.Name, new BsonRegularExpression(query.Search, "i")),
+                Builders<PropertyDocument>.Filter.Regex(x => x.Description, new BsonRegularExpression(query.Search, "i")),
+                Builders<PropertyDocument>.Filter.Regex(x => x.Address, new BsonRegularExpression(query.Search, "i"))
+            );
+            filter = Builders<PropertyDocument>.Filter.And(filter, searchFilter);
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.PropertyType))
+        {
+            var typeFilter = Builders<PropertyDocument>.Filter.Regex(x => x.PropertyType, new BsonRegularExpression(query.PropertyType, "i"));
+            filter = Builders<PropertyDocument>.Filter.And(filter, typeFilter);
+        }
+
+        // Note: Status filtering is not available in PropertyListQuery
+
+        // Apply sorting
+        var sort = ParseSortBson(query.Sort);
+
+        var documents = await _collection.Find(filter)
+            .Sort(sort)
+            .Skip((query.Page - 1) * query.PageSize)
+            .Limit(query.PageSize)
+            .ToListAsync(cancellationToken);
+
+        return documents.Select(doc => new PropertyListDto
+        {
+            Id = doc.Id,
+            Name = doc.Name,
+            Description = doc.Description,
+            Address = doc.Address,
+            Price = doc.Price,
+            Year = doc.Year,
+            CodeInternal = doc.CodeInternal,
+            OwnerId = doc.OwnerId,
+            Status = doc.Status.ToString(),
+            CoverUrl = doc.Cover?.Url ?? doc.CoverImage,
+            HasMoreMedia = doc.Media?.Count(m => m.Enabled && m.Type == MediaType.Image) > _featuredMediaLimit,
+            TotalImages = doc.Media?.Count(m => m.Enabled && m.Type == MediaType.Image) ?? 0,
+            TotalVideos = doc.Media?.Count(m => m.Enabled && m.Type == MediaType.Video) ?? 0,
+            Size = doc.Size,
+            Bedrooms = doc.Bedrooms,
+            Bathrooms = doc.Bathrooms
+        }).ToList();
+    }
+
+    public async Task<long> GetCountByOwnerIdAsync(string ownerId, CancellationToken cancellationToken)
+    {
+        var filter = Builders<PropertyDocument>.Filter.Eq(x => x.OwnerId, ownerId);
+        return await _collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+    }
+
     private static BsonDocument ParseSortBson(string? sort)
     {
         return (sort?.ToLowerInvariant()) switch

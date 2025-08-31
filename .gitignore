@@ -376,3 +376,6 @@ volumes/
 
 # Container data
 container-data/
+
+# Coverage files
+coverage/

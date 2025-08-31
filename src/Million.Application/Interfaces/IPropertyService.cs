@@ -6,6 +6,7 @@ namespace Million.Application.Interfaces;
 public interface IPropertyService
 {
     Task<PagedResult<PropertyListDto>> GetPropertiesAsync(PropertyListQuery query, CancellationToken cancellationToken);
+    Task<PagedResult<PropertyListDto>> GetPropertiesByOwnerAsync(string ownerId, PropertyListQuery? query, CancellationToken cancellationToken);
     Task<PropertyDto?> GetByIdAsync(string id, CancellationToken cancellationToken);
     Task<PropertyDto> CreatePropertyAsync(CreatePropertyRequest request, CancellationToken cancellationToken);
     Task<PropertyDto> UpdatePropertyAsync(string id, UpdatePropertyRequest request, CancellationToken cancellationToken);

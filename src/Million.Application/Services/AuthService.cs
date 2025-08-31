@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Million.Application.DTOs.Auth;
+using Million.Application.DTOs;
 using Million.Application.Interfaces;
 using Million.Domain.Entities;
 using Million.Domain.Exceptions;
@@ -169,6 +170,55 @@ public class AuthService : IAuthService
             else
                 owner.Deactivate();
         }
+
+        return await _ownerRepository.UpdateAsync(owner, ct);
+    }
+
+    public async Task<Owner> UpdateOwnerProfileAsync(string id, UpdateOwnerProfileRequest request, CancellationToken ct = default)
+    {
+        var owner = await _ownerRepository.GetByIdAsync(id, ct);
+        if (owner == null)
+        {
+            throw new OwnerNotFoundException(id);
+        }
+
+        // Update only provided fields
+        if (request.FullName != null)
+            owner.FullName = request.FullName;
+        if (request.PhoneE164 != null)
+            owner.PhoneE164 = request.PhoneE164;
+        if (request.PhotoUrl != null)
+            owner.PhotoUrl = request.PhotoUrl;
+        if (request.Bio != null)
+            owner.Bio = request.Bio;
+        if (request.Company != null)
+            owner.Company = request.Company;
+        if (request.Title != null)
+            owner.Title = request.Title;
+        if (request.ExperienceYears.HasValue)
+            owner.ExperienceYears = request.ExperienceYears.Value;
+        if (request.Location != null)
+            owner.Location = request.Location;
+        if (request.Address != null)
+            owner.Address = request.Address;
+        if (request.Timezone != null)
+            owner.Timezone = request.Timezone;
+        if (request.LinkedInUrl != null)
+            owner.LinkedInUrl = request.LinkedInUrl;
+        if (request.InstagramUrl != null)
+            owner.InstagramUrl = request.InstagramUrl;
+        if (request.FacebookUrl != null)
+            owner.FacebookUrl = request.FacebookUrl;
+        if (request.Specialties != null)
+            owner.Specialties = request.Specialties;
+        if (request.Languages != null)
+            owner.Languages = request.Languages;
+        if (request.Certifications != null)
+            owner.Certifications = request.Certifications;
+
+        // Update timestamps
+        owner.LastActive = DateTime.UtcNow;
+        owner.UpdatedAt = DateTime.UtcNow;
 
         return await _ownerRepository.UpdateAsync(owner, ct);
     }

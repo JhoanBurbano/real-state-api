@@ -1,4 +1,5 @@
 using Million.Application.DTOs.Auth;
+using Million.Application.DTOs;
 using Million.Domain.Entities;
 
 namespace Million.Application.Interfaces;
@@ -10,6 +11,7 @@ public interface IAuthService
     Task LogoutAsync(string refreshToken, CancellationToken ct = default);
     Task<Owner> CreateOwnerAsync(CreateOwnerRequest request, CancellationToken ct = default);
     Task<Owner> UpdateOwnerAsync(string id, UpdateOwnerRequest request, CancellationToken ct = default);
+    Task<Owner> UpdateOwnerProfileAsync(string id, UpdateOwnerProfileRequest request, CancellationToken ct = default);
     Task<Owner?> GetOwnerByIdAsync(string id, CancellationToken ct = default);
     Task<Owner?> GetOwnerByEmailAsync(string email, CancellationToken ct = default);
     Task<List<Owner>> GetOwnersAsync(string? query = null, int page = 1, int pageSize = 20, CancellationToken ct = default);
